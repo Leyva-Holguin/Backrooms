@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Agregar Nivel{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Agregar Nuevo Nivel de Backrooms</h1>
+    <a href="/backrooms" class="btn btn-secondary">← Volver</a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card bg-secondary">
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Nombre del nivel *</label>
+                        <input type="text" class="form-control" name="nombre" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Número del nivel *</label>
+                        <input type="number" class="form-control" name="numero" required min="0">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Nivel de peligro *</label>
+                        <select class="form-select" name="peligro" required>
+                            <option value="Bajo">Bajo</option>
+                            <option value="Medio">Medio</option>
+                            <option value="Alto">Alto</option>
+                            <option value="Crítico">Crítico</option>
+                        </select>
+                    </div>
+                    
+                    <div class="card mb-3 bg-dark">
+                        <div class="card-header">
+                            <h5 class="mb-0">Loot disponible</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Líquidos</label>
+                                <input type="text" class="form-control" name="liquidos" placeholder="Ej: Agua de almendras">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Comida</label>
+                                <input type="text" class="form-control" name="comida" placeholder="Ej: Galletas saladas">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Otros</label>
+                                <input type="text" class="form-control" name="otros" placeholder="Ej: Baterías, linternas">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Entidades (separadas por comas)</label>
+                        <input type="text" class="form-control" name="entidades" placeholder="Ej: Smiler, Hound, Faceling">
+                        <small class="text-muted">Separa cada entidad con una coma</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Descripción del nivel *</label>
+                        <textarea class="form-control" name="descripcion" rows="5" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success">Guardar Nivel</button>
+                    <a href="/backrooms" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

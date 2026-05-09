@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Todos los Niveles{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Todos los Niveles de Backrooms</h1>
+    <div>
+        <span class="badge bg-info">Bienvenido, {{ session.usuario }}</span>
+        <a href="/logout" class="btn btn-danger btn-sm">Cerrar Sesión</a>
+    </div>
+</div>
+
+<div class="btn-group mb-4">
+    <a href="/backrooms" class="btn btn-primary active">Todos</a>
+    <a href="/backrooms/mis_niveles" class="btn btn-outline-primary">Mis Niveles</a>
+    <a href="/backrooms/agregar" class="btn btn-success">Agregar Nivel</a>
+</div>
+
+{% if niveles %}
+    <div class="row">
+        {% for nivel in niveles %}
+        <div class="col-md-6 mb-4">
+            <div class="card bg-secondary h-100">
+                <div class="card-header">
+                    <h3 class="mb-0">Nivel {{ nivel.numero }}: {{ nivel.nombre }}</h3>
+                </div>
+                <div class="card-body">
+                    <span class="badge {% if nivel.peligro == 'Bajo' %}bg-success
+                                         {% elif nivel.peligro == 'Medio' %}bg-warning
+                                         {% elif nivel.peligro == 'Alto' %}bg-danger
+                                         {% else %}bg-dark{% endif %} mb-3">
+                        Peligro: {{ nivel.peligro }}
+                    </span>
+                    
+                    <h5>Loot:</h5>
+                    <ul class="list-group list-group-flush bg-dark mb-3">
+                        <li class="list-group-item bg-secondary">Líquidos: {{ nivel.loot.liquidos or 'Ninguno' }}</li>
+                        <li class="list-group-item bg-secondary">Comida: {{ nivel.loot.comida or 'Ninguna' }}</li>
+                        <li class="list-group-item bg-secondary">Otros: {{ nivel.loot.otros or 'Ninguno' }}</li>
+                    </ul>
+                    
+                    <h5>Entidades:</h5>
+                    <p>{{ nivel.entidades|join(', ') or 'Ninguna' }}</p>
+                    
+                    <h5>Descripción:</h5>
+                    <p>{{ nivel.descripcion }}</p>
+                </div>
+                <div class="card-footer text-muted">
+                    <small>Creado: {{ nivel.fecha_creacion.strftime('%d/%m/%Y') }}</small>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">No hay niveles registrados aún. ¡Sé el primero en agregar uno!</div>
+{% endif %}
+{% endblock %}
