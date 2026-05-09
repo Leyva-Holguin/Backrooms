@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block titulo %}Crear cuenta{% endblock %}
+{% block contenido %}
+
+<div class="container py-5">
+    <div class="row justify-content-center align-items-center min-vh-75">
+        <div class="col-lg-7 col-md-8">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="bg-primary p-4 text-center">
+                    <div class="mb-3"><i class="bi bi-person-plus-fill" style="font-size: 60px; color: white;"></i></div>
+                    <h3 class="text-white mb-0 fw-bold">Crea tu perfil</h3>
+                    <p class="text-white-50 mb-0">Es rápido y fácil</p>
+                </div>
+                <div class="card-body p-4 p-lg-5">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} border-0 rounded-3 mb-4 alert-dismissible fade show" role="alert"><i class="bi bi-{{ 'exclamation-triangle-fill' if category == 'error' else 'check-circle-fill' }} me-2"></i>{{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    <form method="post" action="{{ url_for('registrar') }}">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold text-secondary"><i class="bi bi-person-fill me-1"></i>Nombre</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-person text-secondary"></i></span>
+                                    <input type="text" class="form-control bg-light border-start-0" id="nombre" name="nombre" placeholder="Ej: Juan" required minlength="2" maxlength="20" value="{{ request.form.get('nombre', '') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold text-secondary"><i class="bi bi-person-fill me-1"></i>Apellido</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-person-badge text-secondary"></i></span>
+                                    <input type="text" class="form-control bg-light border-start-0" id="apellido" name="apellido" placeholder="Ej: Pérez" required minlength="2" maxlength="20" value="{{ request.form.get('apellido', '') }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold text-secondary"><i class="bi bi-calendar3-fill me-1"></i>Fecha de nacimiento</label>
+                            <div class="row g-2">
+                                <div class="col-4">
+                                    <input type="number" class="form-control bg-light" id="dia" name="dia" placeholder="Día" min="1" max="31" value="{{ request.form.get('dia', '') }}">
+                                </div>
+                                <div class="col-4"><input type="number" class="form-control bg-light" id="mes" name="mes" placeholder="Mes" min="1" max="12" value="{{ request.form.get('mes', '') }}">
+                                </div>
+                                <div class="col-4">
+                                    <input type="number" class="form-control bg-light" id="year" name="year" placeholder="Año" min="1900" max="2025" value="{{ request.form.get('year', '') }}">
+                                </div>
+                            </div><small class="text-muted">DD / MM / AAAA</small></div>
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold text-secondary"><i class="bi bi-envelope-fill me-1"></i>Correo electrónico</label>
+                            <div class="input-group"> <span class="input-group-text bg-light border-end-0"><i class="bi bi-envelope text-secondary"></i></span>
+                                <input type="email" class="form-control bg-light border-start-0" id="correo" name="correo" placeholder="correo@correo.com" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" value="{{ request.form.get('correo', '') }}">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold text-secondary"><i class="bi bi-lock-fill me-1"></i>Contraseña</label>
+                            <div class="input-group"><span class="input-group-text bg-light border-end-0"><i class="bi bi-key text-secondary"></i></span>
+                                <input type="password" class="form-control bg-light border-start-0" id="password" name="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Debe contener al menos un número, una mayúscula y mínimo 8 caracteres">
+                            </div>
+                            <small class="text-muted">Mínimo 8 caracteres, una mayúscula y un número</small>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold text-secondary"><i class="bi bi-shield-lock-fill me-1"></i>Confirmar contraseña</label>
+                            <div class="input-group"><span class="input-group-text bg-light border-end-0"><i class="bi bi-check-circle text-secondary"></i></span>
+                                <input type="password" class="form-control bg-light border-start-0" id="confirmPassword" name="confirmPassword" required placeholder="Repite tu contraseña">
+                            </div>
+                        </div>
+                        <div class="d-grid mb-4">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-3 py-2 fw-bold"><i class="bi bi-person-plus-fill me-2"></i>Registrarte</button>
+                        </div>
+                        <div class="text-center">
+                            <span class="text-muted small">¿Ya tienes una cuenta?</span>
+                            <a href="{{ url_for('iniciar') }}" class="text-decoration-none fw-semibold ms-1"><i class="bi bi-box-arrow-in-right me-1"></i>Iniciar sesión</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
