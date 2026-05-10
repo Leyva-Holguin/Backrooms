@@ -7,57 +7,79 @@
     <h1>Editar Nivel {{ nivel.numero }}: {{ nivel.nombre }}</h1>
     <a href="/backrooms/mis_niveles" class="btn btn-secondary">← Volver</a>
 </div>
-
 <div class="row justify-content-center">
     <div class="col-md-8">
         <div class="card bg-secondary">
             <div class="card-body">
                 <form method="POST">
                     <div class="mb-3">
-                        <label class="form-label">Nombre del nivel *</label>
+                        <label class="form-label text-white">Nombre del nivel *</label>
                         <input type="text" class="form-control" name="nombre" value="{{ nivel.nombre }}" required>
                     </div>
-                    
                     <div class="mb-3">
-                        <label class="form-label">Nivel de peligro *</label>
+                        <label class="form-label text-white">Dificultad de supervivencia *</label>
                         <select class="form-select" name="peligro" required>
-                            <option value="Bajo" {% if nivel.peligro == 'Bajo' %}selected{% endif %}>Bajo</option>
-                            <option value="Medio" {% if nivel.peligro == 'Medio' %}selected{% endif %}>Medio</option>
-                            <option value="Alto" {% if nivel.peligro == 'Alto' %}selected{% endif %}>Alto</option>
-                            <option value="Crítico" {% if nivel.peligro == 'Crítico' %}selected{% endif %}>Crítico</option>
+                            <option value="0" {% if nivel.peligro == '0' %}selected{% endif %}>0 - Seguro</option>
+                            <option value="1" {% if nivel.peligro == '1' %}selected{% endif %}>1 - Seguro</option>
+                            <option value="2" {% if nivel.peligro == '2' %}selected{% endif %}>2 - Bajo riesgo</option>
+                            <option value="3" {% if nivel.peligro == '3' %}selected{% endif %}>3 - Riesgo moderado</option>
+                            <option value="4" {% if nivel.peligro == '4' %}selected{% endif %}>4 - Alto riesgo</option>
+                            <option value="5" {% if nivel.peligro == '5' %}selected{% endif %}>5 - Extremo</option>
                         </select>
                     </div>
-                    
                     <div class="card mb-3 bg-dark">
-                        <div class="card-header">
+                        <div class="card-header bg-primary text-white">
                             <h5 class="mb-0">Loot disponible</h5>
                         </div>
                         <div class="card-body">
                             <div class="mb-3">
-                                <label class="form-label">Líquidos</label>
+                                <label class="form-label text-white">Liquidos</label>
                                 <input type="text" class="form-control" name="liquidos" value="{{ nivel.loot.liquidos or '' }}">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Comida</label>
+                                <label class="form-label text-white">Comida</label>
                                 <input type="text" class="form-control" name="comida" value="{{ nivel.loot.comida or '' }}">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Otros</label>
+                                <label class="form-label text-white">Otros</label>
                                 <input type="text" class="form-control" name="otros" value="{{ nivel.loot.otros or '' }}">
                             </div>
                         </div>
                     </div>
-                    
                     <div class="mb-3">
-                        <label class="form-label">Entidades (separadas por comas)</label>
+                        <label class="form-label text-white">Entidades (separadas por comas)</label>
                         <input type="text" class="form-control" name="entidades" value="{{ nivel.entidades|join(', ') }}">
                     </div>
-                    
+                    <div class="card mb-3 bg-dark">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="mb-0">Eventos del nivel (maximo 3)</h5>
+                        </div>
+                        <div class="card-body">
+                            {% set eventos = nivel.eventos if nivel.eventos else [] %}
+                            <div class="mb-3">
+                                <label class="form-label text-white">Evento 1 - Nombre</label>
+                                <input type="text" class="form-control mb-2" name="evento1_nombre" value="{{ eventos[0]['nombre'] if eventos|length > 0 else '' }}">
+                                <label class="form-label text-white">Descripcion</label>
+                                <textarea class="form-control" name="evento1_descripcion" rows="2">{{ eventos[0]['descripcion'] if eventos|length > 0 else '' }}</textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-white">Evento 2 - Nombre</label>
+                                <input type="text" class="form-control mb-2" name="evento2_nombre" value="{{ eventos[1]['nombre'] if eventos|length > 1 else '' }}">
+                                <label class="form-label text-white">Descripcion</label>
+                                <textarea class="form-control" name="evento2_descripcion" rows="2">{{ eventos[1]['descripcion'] if eventos|length > 1 else '' }}</textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-white">Evento 3 - Nombre</label>
+                                <input type="text" class="form-control mb-2" name="evento3_nombre" value="{{ eventos[2]['nombre'] if eventos|length > 2 else '' }}">
+                                <label class="form-label text-white">Descripcion</label>
+                                <textarea class="form-control" name="evento3_descripcion" rows="2">{{ eventos[2]['descripcion'] if eventos|length > 2 else '' }}</textarea>
+                            </div>
+                        </div>
+                    </div>
                     <div class="mb-3">
-                        <label class="form-label">Descripción del nivel *</label>
+                        <label class="form-label text-white">Descripcion del nivel *</label>
                         <textarea class="form-control" name="descripcion" rows="5" required>{{ nivel.descripcion }}</textarea>
                     </div>
-                    
                     <button type="submit" class="btn btn-warning">Guardar Cambios</button>
                     <a href="/backrooms/mis_niveles" class="btn btn-secondary">Cancelar</a>
                 </form>

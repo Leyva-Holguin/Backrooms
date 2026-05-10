@@ -6,7 +6,6 @@ from datetime import datetime
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Ladrillos_que_ruedan_nueces_que_vuelan'
 
-# Inicializar gestor de Backrooms
 gestor = GestorBackrooms()
 
 @app.route('/')
@@ -85,12 +84,10 @@ def logout():
     session.clear()
     flash('Has cerrado sesión correctamente', 'info')
     return redirect(url_for('iniciar'))
-
 @app.route('/backrooms')
 def backrooms_index():
     if not session.get('logueado'):
         return redirect(url_for('iniciar'))
-    
     niveles = gestor.obtener_niveles()
     return render_template('backrooms/index.html', niveles=niveles)
 
@@ -98,7 +95,6 @@ def backrooms_index():
 def mis_niveles():
     if not session.get('logueado'):
         return redirect(url_for('iniciar'))
-    
     usuario_id = session.get('usuario_id')
     niveles = gestor.obtener_niveles(usuario_id)
     return render_template('backrooms/mis_niveles.html', niveles=niveles)
@@ -107,7 +103,6 @@ def mis_niveles():
 def agregar_nivel():
     if not session.get('logueado'):
         return redirect(url_for('iniciar'))
-    
     if request.method == 'POST':
         datos = {
             'nombre': request.form.get('nombre'),
@@ -117,28 +112,29 @@ def agregar_nivel():
             'comida': request.form.get('comida'),
             'otros': request.form.get('otros'),
             'entidades': request.form.get('entidades'),
-            'descripcion': request.form.get('descripcion')
+            'descripcion': request.form.get('descripcion'),
+            'evento1_nombre': request.form.get('evento1_nombre'),
+            'evento1_descripcion': request.form.get('evento1_descripcion'),
+            'evento2_nombre': request.form.get('evento2_nombre'),
+            'evento2_descripcion': request.form.get('evento2_descripcion'),
+            'evento3_nombre': request.form.get('evento3_nombre'),
+            'evento3_descripcion': request.form.get('evento3_descripcion')
         }
-        
-        # Verificar que el número de nivel no exista
         if gestor.obtener_nivel_por_numero(int(datos['numero'])):
             flash(f'El nivel {datos["numero"]} ya existe en los Backrooms', 'error')
             return render_template('backrooms/formulario.html')
-        
         nivel_id = gestor.crear_nivel(session['usuario_id'], datos)
         if nivel_id:
             flash(f'¡Nivel {datos["nombre"]} añadido correctamente!', 'success')
             return redirect(url_for('backrooms_index'))
         else:
             flash('Error al crear el nivel', 'error')
-    
     return render_template('backrooms/formulario.html')
 
 @app.route('/backrooms/editar/<nivel_id>', methods=['GET', 'POST'])
 def editar_nivel(nivel_id):
     if not session.get('logueado'):
         return redirect(url_for('iniciar'))
-    
     if request.method == 'POST':
         datos = {
             'nombre': request.form.get('nombre'),
@@ -147,34 +143,33 @@ def editar_nivel(nivel_id):
             'comida': request.form.get('comida'),
             'otros': request.form.get('otros'),
             'entidades': request.form.get('entidades'),
-            'descripcion': request.form.get('descripcion')
+            'descripcion': request.form.get('descripcion'),
+            'evento1_nombre': request.form.get('evento1_nombre'),
+            'evento1_descripcion': request.form.get('evento1_descripcion'),
+            'evento2_nombre': request.form.get('evento2_nombre'),
+            'evento2_descripcion': request.form.get('evento2_descripcion'),
+            'evento3_nombre': request.form.get('evento3_nombre'),
+            'evento3_descripcion': request.form.get('evento3_descripcion')
         }
-        
         if gestor.actualizar_nivel(nivel_id, datos):
             flash('Nivel actualizado correctamente', 'success')
         else:
             flash('Error al actualizar el nivel', 'error')
-        
-        return redirect(url_for('mis_niveles'))
-    
-    # GET: Mostrar formulario con datos actuales
+        return redirect(url_for('mis_niveles'))   
     nivel = gestor.obtener_nivel_por_id(nivel_id)
     if not nivel:
         flash('Nivel no encontrado', 'error')
-        return redirect(url_for('mis_niveles'))
-    
+        return redirect(url_for('mis_niveles'))   
     return render_template('backrooms/editar.html', nivel=nivel)
 
 @app.route('/backrooms/eliminar/<nivel_id>')
 def eliminar_nivel(nivel_id):
     if not session.get('logueado'):
-        return redirect(url_for('iniciar'))
-    
+        return redirect(url_for('iniciar'))    
     if gestor.eliminar_nivel(nivel_id):
         flash('Nivel eliminado correctamente', 'success')
     else:
-        flash('Error al eliminar el nivel', 'error')
-    
+        flash('Error al eliminar el nivel', 'error')   
     return redirect(url_for('mis_niveles'))
 
 if __name__ == '__main__':

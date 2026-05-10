@@ -8,7 +8,6 @@
 </head>
 <body class="bg-dark text-light">
     <div class="container py-4">
-        <!-- Mensajes flash -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}

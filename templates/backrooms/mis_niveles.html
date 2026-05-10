@@ -7,16 +7,14 @@
     <h1>Mis Niveles de Backrooms</h1>
     <div>
         <span class="badge bg-info">Bienvenido, {{ session.usuario }}</span>
-        <a href="/logout" class="btn btn-danger btn-sm">Cerrar Sesión</a>
+        <a href="/logout" class="btn btn-danger btn-sm">Cerrar Sesion</a>
     </div>
 </div>
-
 <div class="btn-group mb-4">
     <a href="/backrooms" class="btn btn-outline-primary">Todos</a>
     <a href="/backrooms/mis_niveles" class="btn btn-primary active">Mis Niveles</a>
     <a href="/backrooms/agregar" class="btn btn-success">Agregar Nivel</a>
 </div>
-
 {% if niveles %}
     <div class="row">
         {% for nivel in niveles %}
@@ -26,24 +24,35 @@
                     <h3 class="mb-0">Nivel {{ nivel.numero }}: {{ nivel.nombre }}</h3>
                 </div>
                 <div class="card-body">
-                    <span class="badge {% if nivel.peligro == 'Bajo' %}bg-success
-                                         {% elif nivel.peligro == 'Medio' %}bg-warning
-                                         {% elif nivel.peligro == 'Alto' %}bg-danger
-                                         {% else %}bg-dark{% endif %} mb-3">
-                        Peligro: {{ nivel.peligro }}
-                    </span>
-                    
+                    <span class="badge 
+                        {% if nivel.peligro == '0' or nivel.peligro == '1' %}bg-success
+                        {% elif nivel.peligro == '2' %}bg-info
+                        {% elif nivel.peligro == '3' %}bg-warning text-dark
+                        {% elif nivel.peligro == '4' %}bg-danger
+                        {% elif nivel.peligro == '5' %}bg-dark
+                        {% else %}bg-secondary{% endif %} mb-3">
+                        Dificultad: {{ nivel.peligro }}
+                    </span>    
                     <h5>Loot:</h5>
                     <ul class="list-group list-group-flush bg-dark mb-3">
-                        <li class="list-group-item bg-secondary">Líquidos: {{ nivel.loot.liquidos or 'Ninguno' }}</li>
+                        <li class="list-group-item bg-secondary">Liquidos: {{ nivel.loot.liquidos or 'Ninguno' }}</li>
                         <li class="list-group-item bg-secondary">Comida: {{ nivel.loot.comida or 'Ninguna' }}</li>
                         <li class="list-group-item bg-secondary">Otros: {{ nivel.loot.otros or 'Ninguno' }}</li>
                     </ul>
-                    
                     <h5>Entidades:</h5>
                     <p>{{ nivel.entidades|join(', ') or 'Ninguna' }}</p>
-                    
-                    <h5>Descripción:</h5>
+                    {% if nivel.eventos and nivel.eventos|length > 0 %}
+                        <h5>Eventos:</h5>
+                        <div class="list-group list-group-flush bg-dark mb-3">
+                            {% for evento in nivel.eventos %}
+                            <div class="list-group-item bg-secondary">
+                                <strong>{{ evento.nombre }}</strong>
+                                <p class="mb-0 mt-1">{{ evento.descripcion }}</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <h5>Descripcion:</h5>
                     <p>{{ nivel.descripcion }}</p>
                 </div>
                 <div class="card-footer">
@@ -57,8 +66,8 @@
     </div>
 {% else %}
     <div class="alert alert-info">
-        No has creado ningún nivel aún.
-        <a href="/backrooms/agregar" class="alert-link">¡Crea tu primer nivel!</a>
+        No has creado ningun nivel aun.
+        <a href="/backrooms/agregar" class="alert-link">Crea tu primer nivel!</a>
     </div>
 {% endif %}
 {% endblock %}

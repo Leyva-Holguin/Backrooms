@@ -12,9 +12,8 @@ class GestorBackrooms:
             self.db = self.cliente['backrooms_db']
             self.niveles = self.db['niveles']
             self.usuarios = self.db['usuarios']
-            
             self._crear_indices()
-            print("✅ Conectado a MongoDB (Backrooms)")
+            print("Conectado a MongoDB (Backrooms)")
         except ConnectionFailure:
             print("❌ Error: No se pudo conectar a MongoDB")
             raise
@@ -35,7 +34,7 @@ class GestorBackrooms:
             })
             return str(resultado.inserted_id)
         except DuplicateKeyError:
-            print(f"❌ Error: El correo {correo} ya está registrado")
+            print(f"Error: El correo {correo} ya está registrado")
             return None
 
     def obtener_usuario2(self, correo: str, password: str) -> Optional[Dict]:
@@ -46,10 +45,10 @@ class GestorBackrooms:
                     usuario["_id"] = str(usuario["_id"])
                     return usuario
                 else:
-                    print("❌ Contraseña incorrecta")
+                    print("Contraseña incorrecta")
                     return None
             else:
-                print("❌ Usuario no encontrado")
+                print("Usuario no encontrado")
                 return None
         except Exception as e:
             print(f"Error al obtener usuario: {e}")
@@ -67,6 +66,22 @@ class GestorBackrooms:
     
     def crear_nivel(self, usuario_id: str, datos: dict) -> Optional[str]:
         try:
+            eventos = []
+            if datos.get('evento1_nombre'):
+                eventos.append({
+                    "nombre": datos['evento1_nombre'],
+                    "descripcion": datos.get('evento1_descripcion', '')
+                })
+            if datos.get('evento2_nombre'):
+                eventos.append({
+                    "nombre": datos['evento2_nombre'],
+                    "descripcion": datos.get('evento2_descripcion', '')
+                })
+            if datos.get('evento3_nombre'):
+                eventos.append({
+                    "nombre": datos['evento3_nombre'],
+                    "descripcion": datos.get('evento3_descripcion', '')
+                })
             nivel = {
                 "usuario_id": ObjectId(usuario_id),
                 "nombre": datos['nombre'],
@@ -78,13 +93,14 @@ class GestorBackrooms:
                     "otros": datos.get('otros', '')
                 },
                 "entidades": [e.strip() for e in datos.get('entidades', '').split(',') if e.strip()],
+                "eventos": eventos,
                 "descripcion": datos['descripcion'],
                 "fecha_creacion": datetime.now()
             }
             resultado = self.niveles.insert_one(nivel)
             return str(resultado.inserted_id)
         except DuplicateKeyError:
-            print(f"❌ Error: El nivel {datos['numero']} ya existe")
+            print(f"Error: El nivel {datos['numero']} ya existe")
             return None
     
     def obtener_niveles(self, usuario_id: Optional[str] = None) -> List[Dict]:
@@ -115,6 +131,22 @@ class GestorBackrooms:
         return nivel
     
     def actualizar_nivel(self, nivel_id: str, datos: dict) -> bool:
+        eventos = []
+        if datos.get('evento1_nombre'):
+            eventos.append({
+                "nombre": datos['evento1_nombre'],
+                "descripcion": datos.get('evento1_descripcion', '')
+            })
+        if datos.get('evento2_nombre'):
+            eventos.append({
+                "nombre": datos['evento2_nombre'],
+                "descripcion": datos.get('evento2_descripcion', '')
+            })
+        if datos.get('evento3_nombre'):
+            eventos.append({
+                "nombre": datos['evento3_nombre'],
+                "descripcion": datos.get('evento3_descripcion', '')
+            })
         resultado = self.niveles.update_one(
             {"_id": ObjectId(nivel_id)},
             {"$set": {
@@ -124,6 +156,7 @@ class GestorBackrooms:
                 "loot.comida": datos.get('comida', ''),
                 "loot.otros": datos.get('otros', ''),
                 "entidades": [e.strip() for e in datos.get('entidades', '').split(',') if e.strip()],
+                "eventos": eventos,
                 "descripcion": datos['descripcion'],
                 "fecha_actualizacion": datetime.now()
             }}
