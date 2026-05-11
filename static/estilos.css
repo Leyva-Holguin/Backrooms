@@ -3,5 +3,17 @@ body{
 }
 
 .nav1{
+    background-color: #283618;
+}
+
+.card1{
+    background-color: #d4c073;
+}
+
+.card2{
+    background-color: #d4c073;
+}
+
+.btn1{
     background-color: #6d2828;
 }

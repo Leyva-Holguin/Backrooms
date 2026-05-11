@@ -6,16 +6,11 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Mis Niveles de Backrooms</h1>
 </div>
-<div class="btn-group mb-4">
-    <a href="/backrooms" class="btn btn-outline-primary">Todos</a>
-    <a href="/mis_niveles" class="btn btn-primary active">Mis Niveles</a>
-    <a href="/agregar" class="btn btn-success">Agregar Nivel</a>
-</div>
 {% if niveles %}
 <div class="row">
     {% for nivel in niveles %}
     <div class="col-md-6 mb-4 col-lg-4">
-        <div class="card bg-secondary h-100">
+        <div class="card1 card h-100">
             <div class="card-header">
                 <h3 class="mb-0">Nivel {{ nivel.numero }}: {{ nivel.nombre
                     }}</h3>

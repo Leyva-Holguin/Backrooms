@@ -6,23 +6,18 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Todos los Niveles de Backrooms</h1>
 </div>
-<div class="btn-group mb-4">
-    <a href="/backrooms" class="btn btn-primary active">Todos</a>
-    <a href="/mis_niveles" class="btn btn-outline-primary">Mis Niveles</a>
-    <a href="/agregar" class="btn btn-success">Agregar Nivel</a>
-</div>
 {% if niveles %}
     <div class="row">
         {% for nivel in niveles %}
         <div class="col-md-6 mb-4 col-lg-4">
-            <div class="card bg-secondary h-100">
+            <div class="card1 text-light card h-100">
                 <div class="card-header">
-                    <h3 class="mb-0">Nivel {{ nivel.numero }}: {{ nivel.nombre }}</h3>
+                    <h3>Nivel {{ nivel.numero }}: {{ nivel.nombre }}</h3>
                 </div>
                 <div class="card-body">
                     <span class="badge 
                         {% if nivel.peligro == '0' or nivel.peligro == '1' %}bg-success
-                        {% elif nivel.peligro == '2' %}bg-info
+                        {% elif nivel.peligro == '2' %}bg-primary
                         {% elif nivel.peligro == '3' %}bg-warning text-dark
                         {% elif nivel.peligro == '4' %}bg-danger
                         {% elif nivel.peligro == '5' %}bg-dark
@@ -30,10 +25,10 @@
                         Dificultad: {{ nivel.peligro }}
                     </span>
                     <h5>Loot:</h5>
-                    <ul class="list-group list-group-flush bg-dark mb-3">
-                        <li class="list-group-item bg-secondary">Liquidos: {{ nivel.loot.liquidos or 'Ninguno' }}</li>
-                        <li class="list-group-item bg-secondary">Comida: {{ nivel.loot.comida or 'Ninguna' }}</li>
-                        <li class="list-group-item bg-secondary">Otros: {{ nivel.loot.otros or 'Ninguno' }}</li>
+                    <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item card2">Liquidos: {{ nivel.loot.liquidos or 'Ninguno' }}</li>
+                        <li class="list-group-item card2">Comida: {{ nivel.loot.comida or 'Ninguna' }}</li>
+                        <li class="list-group-item card2">Otros: {{ nivel.loot.otros or 'Ninguno' }}</li>
                     </ul>
 
                     <div class="col-md-6">
@@ -48,9 +43,9 @@
                             Eventos
                         </summary>
                     
-                        <div class="list-group list-group-flush bg-dark mb-3">
+                        <div class="list-group list-group-flush mb-3">
                             {% for evento in nivel.eventos %}
-                            <div class="list-group-item bg-secondary">
+                            <div class="list-group-item card2 text-light">
                                 <strong>{{ evento.nombre }}</strong>
                                 <p class="mb-0 mt-1">{{ evento.descripcion }}</p>
                             </div>
