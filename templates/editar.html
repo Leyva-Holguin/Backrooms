@@ -5,7 +5,7 @@
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Editar Nivel {{ nivel.numero }}: {{ nivel.nombre }}</h1>
-    <a href="/backrooms/mis_niveles" class="btn btn-secondary">← Volver</a>
+    <a href="/mis_niveles" class="btn btn-secondary">← Volver</a>
 </div>
 <div class="row justify-content-center">
     <div class="col-md-8">
@@ -81,7 +81,7 @@
                         <textarea class="form-control" name="descripcion" rows="5" required>{{ nivel.descripcion }}</textarea>
                     </div>
                     <button type="submit" class="btn btn-warning">Guardar Cambios</button>
-                    <a href="/backrooms/mis_niveles" class="btn btn-secondary">Cancelar</a>
+                    <a href="/mis_niveles" class="btn btn-secondary">Cancelar</a>
                 </form>
             </div>
         </div>

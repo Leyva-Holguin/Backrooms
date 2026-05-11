@@ -84,22 +84,23 @@ def logout():
     session.clear()
     flash('Has cerrado sesión correctamente', 'info')
     return redirect(url_for('iniciar'))
+
 @app.route('/backrooms')
 def backrooms_index():
     if not session.get('logueado'):
         return redirect(url_for('iniciar'))
     niveles = gestor.obtener_niveles()
-    return render_template('backrooms/index.html', niveles=niveles)
+    return render_template('index.html', niveles=niveles)
 
-@app.route('/backrooms/mis_niveles')
+@app.route('/mis_niveles')
 def mis_niveles():
     if not session.get('logueado'):
         return redirect(url_for('iniciar'))
     usuario_id = session.get('usuario_id')
     niveles = gestor.obtener_niveles(usuario_id)
-    return render_template('backrooms/mis_niveles.html', niveles=niveles)
+    return render_template('mis_niveles.html', niveles=niveles)
 
-@app.route('/backrooms/agregar', methods=['GET', 'POST'])
+@app.route('/agregar', methods=['GET', 'POST'])
 def agregar_nivel():
     if not session.get('logueado'):
         return redirect(url_for('iniciar'))
@@ -122,16 +123,16 @@ def agregar_nivel():
         }
         if gestor.obtener_nivel_por_numero(int(datos['numero'])):
             flash(f'El nivel {datos["numero"]} ya existe en los Backrooms', 'error')
-            return render_template('backrooms/formulario.html')
+            return render_template('formulario.html')
         nivel_id = gestor.crear_nivel(session['usuario_id'], datos)
         if nivel_id:
             flash(f'¡Nivel {datos["nombre"]} añadido correctamente!', 'success')
             return redirect(url_for('backrooms_index'))
         else:
             flash('Error al crear el nivel', 'error')
-    return render_template('backrooms/formulario.html')
+    return render_template('formulario.html')
 
-@app.route('/backrooms/editar/<nivel_id>', methods=['GET', 'POST'])
+@app.route('/editar/<nivel_id>', methods=['GET', 'POST'])
 def editar_nivel(nivel_id):
     if not session.get('logueado'):
         return redirect(url_for('iniciar'))
@@ -160,9 +161,9 @@ def editar_nivel(nivel_id):
     if not nivel:
         flash('Nivel no encontrado', 'error')
         return redirect(url_for('mis_niveles'))   
-    return render_template('backrooms/editar.html', nivel=nivel)
+    return render_template('editar.html', nivel=nivel)
 
-@app.route('/backrooms/eliminar/<nivel_id>')
+@app.route('/eliminar/<nivel_id>')
 def eliminar_nivel(nivel_id):
     if not session.get('logueado'):
         return redirect(url_for('iniciar'))    

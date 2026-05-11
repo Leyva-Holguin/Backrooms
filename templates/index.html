@@ -5,20 +5,16 @@
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Todos los Niveles de Backrooms</h1>
-    <div>
-        <span class="badge bg-info">Bienvenido, {{ session.usuario }}</span>
-        <a href="/logout" class="btn btn-danger btn-sm">Cerrar Sesion</a>
-    </div>
 </div>
 <div class="btn-group mb-4">
     <a href="/backrooms" class="btn btn-primary active">Todos</a>
-    <a href="/backrooms/mis_niveles" class="btn btn-outline-primary">Mis Niveles</a>
-    <a href="/backrooms/agregar" class="btn btn-success">Agregar Nivel</a>
+    <a href="/mis_niveles" class="btn btn-outline-primary">Mis Niveles</a>
+    <a href="/agregar" class="btn btn-success">Agregar Nivel</a>
 </div>
 {% if niveles %}
     <div class="row">
         {% for nivel in niveles %}
-        <div class="col-md-6 mb-4">
+        <div class="col-md-6 mb-4 col-lg-4">
             <div class="card bg-secondary h-100">
                 <div class="card-header">
                     <h3 class="mb-0">Nivel {{ nivel.numero }}: {{ nivel.nombre }}</h3>
@@ -39,10 +35,19 @@
                         <li class="list-group-item bg-secondary">Comida: {{ nivel.loot.comida or 'Ninguna' }}</li>
                         <li class="list-group-item bg-secondary">Otros: {{ nivel.loot.otros or 'Ninguno' }}</li>
                     </ul>
+
+                    <div class="col-md-6">
                     <h5>Entidades:</h5>
                     <p>{{ nivel.entidades|join(', ') or 'Ninguna' }}</p>
+                    </div>
+
                     {% if nivel.eventos and nivel.eventos|length > 0 %}
-                        <h5>Eventos:</h5>
+
+                    <details class="mb-3">
+                        <summary>
+                            Eventos
+                        </summary>
+                    
                         <div class="list-group list-group-flush bg-dark mb-3">
                             {% for evento in nivel.eventos %}
                             <div class="list-group-item bg-secondary">
@@ -51,9 +56,14 @@
                             </div>
                             {% endfor %}
                         </div>
+                    </details>
                     {% endif %}
-                    <h5>Descripcion:</h5>
+                    <details>
+                        <summary>
+                            Descripcion
+                        </summary>
                     <p>{{ nivel.descripcion }}</p>
+                    </details>
                 </div>
                 <div class="card-footer text-muted">
                     <small>Creado: {{ nivel.fecha_creacion.strftime('%d/%m/%Y') }}</small>
@@ -63,6 +73,6 @@
         {% endfor %}
     </div>
 {% else %}
-    <div class="alert alert-info">No hay niveles registrados aun. Se el primero en agregar uno!</div>
+    <div class="alert alert-info">No hay niveles registrados aun ¡Se el primero en agregar uno!</div>
 {% endif %}
 {% endblock %}
