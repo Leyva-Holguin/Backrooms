@@ -10,7 +10,7 @@
     <div class="row">
         {% for nivel in niveles %}
         <div class="col-md-6 mb-4 col-lg-4">
-            <div class="card1 text-light card h-100">
+            <div class="card1 card h-100">
                 <div class="card-header">
                     <h3>Nivel {{ nivel.numero }}: {{ nivel.nombre }}</h3>
                 </div>
@@ -26,14 +26,14 @@
                     </span>
                     <h5>Loot:</h5>
                     <ul class="list-group list-group-flush mb-3">
-                        <li class="list-group-item card2">Liquidos: {{ nivel.loot.liquidos or 'Ninguno' }}</li>
-                        <li class="list-group-item card2">Comida: {{ nivel.loot.comida or 'Ninguna' }}</li>
-                        <li class="list-group-item card2">Otros: {{ nivel.loot.otros or 'Ninguno' }}</li>
+                        <li class="list-group-item card2 text-light">Liquidos: {{ nivel.loot.liquidos or 'Ninguno' }}</li>
+                        <li class="list-group-item card2 text-light">Comida: {{ nivel.loot.comida or 'Ninguna' }}</li>
+                        <li class="list-group-item card2 text-light">Otros: {{ nivel.loot.otros or 'Ninguno' }}</li>
                     </ul>
 
                     <div class="col-md-6">
                     <h5>Entidades:</h5>
-                    <p>{{ nivel.entidades|join(', ') or 'Ninguna' }}</p>
+                    <p class="text-light">{{ nivel.entidades|join(', ') or 'Ninguna' }}</p>
                     </div>
 
                     {% if nivel.eventos and nivel.eventos|length > 0 %}
@@ -57,7 +57,7 @@
                         <summary>
                             Descripcion
                         </summary>
-                    <p>{{ nivel.descripcion }}</p>
+                    <p class="text-light">{{ nivel.descripcion }}</p>
                     </details>
                 </div>
                 <div class="card-footer text-muted">

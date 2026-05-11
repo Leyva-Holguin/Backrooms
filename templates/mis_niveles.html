@@ -26,18 +26,19 @@
                     Dificultad: {{ nivel.peligro }}
                 </span>
                 <h5>Loot:</h5>
-                <ul class="list-group list-group-flush bg-dark mb-3">
-                    <li class="list-group-item bg-secondary">Liquidos: {{
+                <ul class="list-group list-group-flush mb-3">
+                    <li class="list-group-item card2 text-light">Liquidos: {{
                         nivel.loot.liquidos or 'Ninguno' }}</li>
-                    <li class="list-group-item bg-secondary">Comida: {{
+                    <li class="list-group-item card2 text-light">Comida: {{
                         nivel.loot.comida or 'Ninguna' }}</li>
-                    <li class="list-group-item bg-secondary">Otros: {{
+                    <li class="list-group-item card2 text-light">Otros: {{
                         nivel.loot.otros or 'Ninguno' }}</li>
                 </ul>
 
                 <div class="col-md-6">
                     <h5>Entidades:</h5>
-                    <p>{{ nivel.entidades|join(', ') or 'Ninguna' }}</p>
+                    <p class="text-light">{{ nivel.entidades|join(', ') or
+                        'Ninguna' }}</p>
                 </div>
 
                 {% if nivel.eventos and nivel.eventos|length > 0 %}
@@ -47,9 +48,9 @@
                         Eventos
                     </summary>
 
-                    <div class="list-group list-group-flush bg-dark mb-3">
+                    <div class="list-group list-group-flush mb-3">
                         {% for evento in nivel.eventos %}
-                        <div class="list-group-item bg-secondary">
+                        <div class="list-group-item card2 text-light">
                             <strong>{{ evento.nombre }}</strong>
                             <p class="mb-0 mt-1">{{ evento.descripcion }}</p>
                         </div>
@@ -63,7 +64,7 @@
                     <summary>
                         Descripcion
                     </summary>
-                    <p>{{ nivel.descripcion }}</p>
+                    <p class="text-light">{{ nivel.descripcion }}</p>
                 </details>
             </div>
             <div class="card-footer">
