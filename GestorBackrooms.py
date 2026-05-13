@@ -3,9 +3,8 @@ from pymongo.errors import DuplicateKeyError, ConnectionFailure
 from bson.objectid import ObjectId
 from datetime import datetime
 from typing import Optional, List, Dict
-
 class GestorBackrooms:
-    def __init__(self, uri: str = 'mongodb://localhost:27017/'):
+    def __init__(self, uri: str = 'mongodb+srv://Melannie:R4ls31fluffy@cluster97.jfijvoy.mongodb.net/?appName=Cluster97'):
         try:
             self.cliente = MongoClient(uri, serverSelectionTimeoutMS=5000)
             self.cliente.admin.command('ping')
@@ -13,11 +12,11 @@ class GestorBackrooms:
             self.niveles = self.db['niveles']
             self.usuarios = self.db['usuarios']
             self._crear_indices()
-            print("Conectado a MongoDB (Backrooms)")
+            print("✅ Conectado a MongoDB Atlas (Backrooms)")
         except ConnectionFailure:
-            print("❌ Error: No se pudo conectar a MongoDB")
+            print("❌ Error: No se pudo conectar a MongoDB Atlas")
             raise
-    
+
     def _crear_indices(self):
         self.niveles.create_index("numero", unique=True)
         self.niveles.create_index([("usuario_id", 1), ("fecha_creacion", -1)])
