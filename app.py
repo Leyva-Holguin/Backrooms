@@ -139,6 +139,7 @@ def editar_nivel(nivel_id):
     if request.method == 'POST':
         datos = {
             'nombre': request.form.get('nombre'),
+            'numero': request.form.get('numero'),
             'peligro': request.form.get('peligro'),
             'liquidos': request.form.get('liquidos'),
             'comida': request.form.get('comida'),

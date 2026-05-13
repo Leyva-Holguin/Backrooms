@@ -151,6 +151,7 @@ class GestorBackrooms:
             {"_id": ObjectId(nivel_id)},
             {"$set": {
                 "nombre": datos['nombre'],
+                "numero": int(datos['numero']),
                 "peligro": datos['peligro'],
                 "loot.liquidos": datos.get('liquidos', ''),
                 "loot.comida": datos.get('comida', ''),
