@@ -10,6 +10,8 @@ gestor = GestorBackrooms()
 
 @app.route('/')
 def index():
+    if session.get('logueado'):
+        return redirect(url_for('backrooms_index'))
     return render_template('iniciar.html')
 
 @app.route('/validaLogin', methods=['GET', 'POST'])
