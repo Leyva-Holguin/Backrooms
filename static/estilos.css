@@ -1,9 +1,9 @@
 body{
-    background-image: url("img/backrooms fondo.PNG");
+    background-image: url("img/744119-crop0_219_1000_781-hjkgj695-v4.webp");
 }
 
 .nav1{
-    background-color: #283618;
+    background-color: #312520;
 }
 
 .card1{
@@ -16,4 +16,12 @@ body{
 
 .btn1{
     background-color: #6d2828;
+}
+
+.ini1{
+    background-color: #ccd19d;
+}
+
+.ini2{
+    background-color: #abaf82;
 }
