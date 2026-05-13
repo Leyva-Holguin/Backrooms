@@ -17,6 +17,10 @@
                         <input type="text" class="form-control" name="nombre" value="{{ nivel.nombre }}" required>
                     </div>
                     <div class="mb-3">
+                        <label class="form-label text-white">Numero del nivel *</label>
+                        <input type="number" class="form-control" name="numero" value="{{ nivel.numero }}" required min="0">
+                    </div>
+                    <div class="mb-3">
                         <label class="form-label text-white">Dificultad de supervivencia *</label>
                         <select class="form-select" name="peligro" required>
                             <option value="0" {% if nivel.peligro == '0' %}selected{% endif %}>0 - Seguro</option>
