@@ -13,18 +13,18 @@
                 <form method="POST" action="/validaLogin">
                     <div class="mb-3">
                         <label class="form-label">Correo electrónico</label>
-                        <input type="email" class="form-control" name="correo" required>
+                        <input type="email" class="form-control" name="correo" required placeholder="Correo electrónico" value="{{ request.form.get('correo', '') }}">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" name="password" required>
+                        <input type="password" class="form-control" name="password" placeholder="Contraseña" required>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
                 </form>
                 <hr>
                 <div class="text-center">
-                    <a href="/registro" class="text-light">¿No tienes cuenta? Regístrate</a><br>
-                    <a href="/recuperar" class="text-light">¿Olvidaste tu contraseña?</a>
+                    <a href="{{ url_for('registro') }}" class="text-light">¿No tienes cuenta? Regístrate</a><br>
+                    <a href="{{ url_for('recuperar') }}" class="text-light">¿Olvidaste tu contraseña?</a>
                 </div>
             </div>
         </div>
