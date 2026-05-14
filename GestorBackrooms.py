@@ -3,6 +3,8 @@ from pymongo.errors import DuplicateKeyError, ConnectionFailure
 from bson.objectid import ObjectId
 from datetime import datetime
 from typing import Optional, List, Dict
+import bcrypt
+
 class GestorBackrooms:
     def __init__(self, uri: str = 'mongodb+srv://Melannie:R4ls31fluffy@cluster97.jfijvoy.mongodb.net/?appName=Cluster97'):
         try:
@@ -24,10 +26,14 @@ class GestorBackrooms:
     
     def crear_usuario(self, nombre: str, correo: str, password: str) -> Optional[str]:
         try:
+            password_bytes = password.encode('utf-8')
+            salt = bcrypt.gensalt()
+            encript = bcrypt.hashpw(password_bytes, salt)
+
             resultado = self.usuarios.insert_one({
                 "nombre": nombre,
                 "correo": correo,
-                "password": password,
+                "password": encript,
                 "fecha_registro": datetime.now(),
                 "activo": True
             })
@@ -40,7 +46,7 @@ class GestorBackrooms:
         try:
             usuario = self.usuarios.find_one({"correo": correo})
             if usuario:
-                if usuario["password"] == password:
+                if bcrypt.checkpw(password_ing.encode('utf-8'), usuario["password"]):
                     usuario["_id"] = str(usuario["_id"])
                     return usuario
                 else:
