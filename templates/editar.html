@@ -9,7 +9,7 @@
 </div>
 <div class="row justify-content-center">
     <div class="col-md-8">
-        <div class="card bg-secondary">
+        <div class="card card1">
             <div class="card-body">
                 <form method="POST">
                     <div class="mb-3">
@@ -31,8 +31,8 @@
                             <option value="5" {% if nivel.peligro == '5' %}selected{% endif %}>5 - Extremo</option>
                         </select>
                     </div>
-                    <div class="card mb-3 bg-dark">
-                        <div class="card-header bg-primary text-white">
+                    <div class="card mb-3 card3">
+                        <div class="card-header drop1 text-white">
                             <h5 class="mb-0">Loot disponible</h5>
                         </div>
                         <div class="card-body">
@@ -54,8 +54,8 @@
                         <label class="form-label text-white">Entidades (separadas por comas)</label>
                         <input type="text" class="form-control" name="entidades" value="{{ nivel.entidades|join(', ') }}">
                     </div>
-                    <div class="card mb-3 bg-dark">
-                        <div class="card-header bg-warning text-dark">
+                    <div class="card mb-3 card3">
+                        <div class="card-header drop1 text-light">
                             <h5 class="mb-0">Eventos del nivel (maximo 3)</h5>
                         </div>
                         <div class="card-body">
@@ -84,7 +84,7 @@
                         <label class="form-label text-white">Descripcion del nivel *</label>
                         <textarea class="form-control" name="descripcion" rows="5" required>{{ nivel.descripcion }}</textarea>
                     </div>
-                    <button type="submit" class="btn btn-warning">Guardar Cambios</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
                     <a href="/mis_niveles" class="btn btn-secondary">Cancelar</a>
                 </form>
             </div>
