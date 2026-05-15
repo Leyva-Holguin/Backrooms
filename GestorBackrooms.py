@@ -4,6 +4,7 @@ from bson.objectid import ObjectId
 from datetime import datetime
 from typing import Optional, List, Dict
 import bcrypt 
+
 class GestorBackrooms:
     def __init__(self, uri: str = 'mongodb+srv://Melannie:R4ls31fluffy@cluster97.jfijvoy.mongodb.net/?appName=Cluster97'):
         try:
@@ -25,10 +26,14 @@ class GestorBackrooms:
     
     def crear_usuario(self, nombre: str, correo: str, password: str) -> Optional[str]:
         try:
+            password_ed = bcrypt.hashpw(
+                password.encode('utf-8'),
+                bcrypt.gensalt()
+            ).decode('utf-8')
             resultado = self.usuarios.insert_one({
                 "nombre": nombre,
                 "correo": correo,
-                "password": password,
+                "password": password_ed,
                 "fecha_registro": datetime.now(),
                 "activo": True
             })
@@ -40,8 +45,13 @@ class GestorBackrooms:
     def obtener_usuario2(self, correo: str, password: str) -> Optional[Dict]:
         try:
             usuario = self.usuarios.find_one({"correo": correo})
-            if usuario:
-                if usuario["password"] == password:
+            if usuario:    
+                password_guard = usuario["password"]
+                    
+                if bcrypt.checkpw(
+                    password.encode('utf-8'),
+                    password_guard.encode('utf-8')
+                ):
                     usuario["_id"] = str(usuario["_id"])
                     return usuario
                 else:
