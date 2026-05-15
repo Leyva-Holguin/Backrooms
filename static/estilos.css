@@ -1,27 +1,35 @@
-body{
-    background-image: url("img/744119-crop0_219_1000_781-hjkgj695-v4.webp");
+body {
+    background-image: url("img/original.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
-.nav1{
+.nav1 {
     background-color: #312520;
 }
 
-.card1{
+.drop1 {
+    background-color: #d2be96;
+}
+
+.card1 {
     background-color: #c1ae65;
 }
 
-.card2{
+.card2 {
     background-color: #d4c073;
 }
 
-.btn1{
+.btn1 {
     background-color: #6d2828;
 }
 
-.ini1{
+.ini1 {
     background-color: #ccd19d;
 }
 
-.ini2{
+.ini2 {
     background-color: #abaf82;
 }
