@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Verificar Código{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card card1">
+            <div class="card-header text-center">
+                <h2>Verificar Código</h2>
+            </div>
+            <div class="card-body">
+                <p class="text-center">Se ha enviado un código de 6 dígitos a tu correo electrónico.</p>
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label text-white">Código de verificación</label>
+                        <input type="text" class="form-control text-center" name="codigo" required maxlength="6" placeholder="Ingresa el código" style="font-size: 24px; letter-spacing: 5px;">
+                    </div>
+                    <button type="submit" class="btn btn-warning w-100">Verificar Código</button>
+                </form>
+                <hr>
+                <div class="text-center">
+                    <a href="/recuperar" class="text-light">¿No recibiste el código? Solicitar nuevo</a><br>
+                    <a href="/iniciar" class="text-light">Volver al login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperación de contraseña - Backrooms</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-dark text-light">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card card1 bg-secondary">
+                    <div class="card-header bg-primary text-white text-center">
+                        <h1 class="mb-0">Backrooms</h1>
+                    </div>
+                    <div class="card-body">
+                        <h2 class="text-center mb-4">Recuperación de contraseña</h2>
+                        <p>Hola <strong>{{ username }}</strong>,</p>
+                        <p>Hemos recibido una solicitud para restablecer tu contraseña.</p>
+                        <div class="text-center my-4">
+                            <p class="mb-2">Tu código de verificación es:</p>
+                            <div class="display-4 bg-dark py-3 px-4 rounded d-inline-block" style="letter-spacing: 5px; font-family: monospace;">
+                                <strong class="text-success">{{ codigo }}</strong>
+                            </div>
+                        </div>  
+                        <p class="text-warning">Este código expirará en <strong>10 minutos</strong>.</p>
+                        <p>Si no solicitaste este cambio, ignora este mensaje.</p>
+                    </div>
+                    <div class="card-footer text-center text-muted">
+                        <small>© 2025 Backrooms - Todos los derechos reservados</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

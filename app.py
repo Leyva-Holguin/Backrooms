@@ -2,9 +2,24 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from GestorBackrooms import GestorBackrooms
 from bson.objectid import ObjectId
 from datetime import datetime
+from flask_mail import Mail, Message
+import random
+import string
+from datetime import timedelta
+import bcrypt
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Ladrillos_que_ruedan_nueces_que_vuelan'
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_USERNAME'] = 'backrooms.project.cetis@gmail.com'
+app.config['MAIL_PASSWORD'] = 'hmhqwhyskyghfyka'
+app.config['MAIL_DEFAULT_SENDER'] = 'backrooms.project.cetis@gmail.com'
+
+mail = Mail(app)
 
 gestor = GestorBackrooms()
 
@@ -39,17 +54,89 @@ def validar():
 def registro():
     return render_template('registro.html')
 
+codigos_recuperacion = {}
+
 @app.route('/recuperarr', methods=['GET', 'POST'])
 def recuperarr():
     if request.method == "POST":
-        correor = request.form.get("correor", '').strip()
-        if not correor:
-            flash('Por favor ingresa email', 'error')
+        correo = request.form.get("correor", '').strip()
+        if not correo:
+            flash('Por favor ingresa tu correo electrónico', 'error')
+            return redirect(url_for('recuperar')) 
+        usuario = gestor.usuarios.find_one({"correo": correo})
+        if not usuario:
+            flash('No existe una cuenta con este correo electrónico', 'error')
             return redirect(url_for('recuperar'))
-        else:
-            flash('Tu contraseña ha sido enviada a tu correo electrónico', 'success')
-            return redirect(url_for('iniciar'))
+        codigo = ''.join(random.choices(string.digits, k=6))
+        codigos_recuperacion[correo] = {
+            'codigo': codigo,
+            'expira': datetime.now() + timedelta(minutes=10)
+        }
+        try:
+            msg = Message('Recuperación de contraseña - Backrooms')
+            msg.recipients = [correo]
+            msg.html = render_template('correo_recuperacion.html', username=usuario['username'], codigo=codigo)
+            mail.send(msg)
+            flash('Se ha enviado un código de verificación a tu correo electrónico', 'success')
+            return redirect(url_for('verificar_codigo', correo=correo))
+        except Exception as e:
+            print(f"Error al enviar correo: {e}")
+            flash('Error al enviar el correo. Intenta nuevamente.', 'error')
+            return redirect(url_for('recuperar'))
     return redirect(url_for('recuperar'))
+
+@app.route('/verificar_codigo/<correo>', methods=['GET', 'POST'])
+def verificar_codigo(correo):
+    if request.method == 'POST':
+        codigo = request.form.get('codigo')
+        if correo not in codigos_recuperacion:
+            flash('Código inválido o expirado. Solicita un nuevo código.', 'error')
+            return redirect(url_for('recuperar'))
+        datos = codigos_recuperacion[correo]
+        if datetime.now() > datos['expira']:
+            del codigos_recuperacion[correo]
+            flash('El código ha expirado. Solicita uno nuevo.', 'error')
+            return redirect(url_for('recuperar'))
+        if datos['codigo'] != codigo:
+            flash('Código incorrecto. Intenta nuevamente.', 'error')
+            return render_template('verificar_codigo.html', correo=correo)
+        return redirect(url_for('nueva_contrasena', correo=correo))
+    return render_template('verificar_codigo.html', correo=correo)
+
+@app.route('/nueva_contrasena/<correo>', methods=['GET', 'POST'])
+def nueva_contrasena(correo):
+    if correo not in codigos_recuperacion:
+        flash('Solicita un nuevo código de recuperación primero.', 'error')
+        return redirect(url_for('recuperar'))
+    datos = codigos_recuperacion[correo]
+    if datetime.now() > datos['expira']:
+        del codigos_recuperacion[correo]
+        flash('El código ha expirado. Solicita uno nuevo.', 'error')
+        return redirect(url_for('recuperar'))
+    if request.method == 'POST':
+        nueva_password = request.form.get('nueva_password')
+        confirmar_password = request.form.get('confirmar_password')
+        if not nueva_password or not confirmar_password:
+            flash('Por favor ingresa una nueva contraseña', 'error')
+            return render_template('nueva_contrasena.html', correo=correo)
+        if nueva_password != confirmar_password:
+            flash('Las contraseñas no coinciden', 'error')
+            return render_template('nueva_contrasena.html', correo=correo)
+        if len(nueva_password) < 4:
+            flash('La contraseña debe tener al menos 4 caracteres', 'error')
+            return render_template('nueva_contrasena.html', correo=correo)
+        password_hasheada = bcrypt.hashpw(
+            nueva_password.encode('utf-8'),
+            bcrypt.gensalt()
+        ).decode('utf-8')
+        gestor.usuarios.update_one(
+            {"correo": correo},
+            {"$set": {"password": password_hasheada}}
+        )
+        del codigos_recuperacion[correo]
+        flash('Contraseña actualizada correctamente. Ahora puedes iniciar sesión.', 'success')
+        return redirect(url_for('iniciar'))
+    return render_template('nueva_contrasena.html', correo=correo)
 
 @app.route('/recuperar')
 def recuperar():
@@ -175,8 +262,6 @@ def eliminar_nivel(nivel_id):
         flash('Error al eliminar el nivel', 'error')   
     return redirect(url_for('mis_niveles'))
 
-# ============ RUTAS DE OBJETOS ============
-
 @app.route('/objetos')
 def objetos_index():
     if not session.get('logueado'):
@@ -196,7 +281,6 @@ def mis_objetos():
 def agregar_objeto():
     if not session.get('logueado'):
         return redirect(url_for('iniciar'))
-    
     if request.method == 'POST':
         datos = {
             'numero': request.form.get('numero'),
@@ -208,25 +292,21 @@ def agregar_objeto():
             'obtencion': request.form.get('obtencion'),
             'variaciones': request.form.get('variaciones')
         }
-        
         if gestor.obtener_objeto_por_numero(int(datos['numero'])):
             flash(f'El objeto #{datos["numero"]} ya existe en la base de datos', 'error')
             return render_template('objeto_formulario.html')
-        
         objeto_id = gestor.crear_objeto(session['usuario_id'], datos)
         if objeto_id:
             flash(f'¡Objeto {datos["nombre"]} añadido correctamente!', 'success')
             return redirect(url_for('objetos_index'))
         else:
-            flash('Error al crear el objeto', 'error')
-    
+            flash('Error al crear el objeto', 'error') 
     return render_template('objeto_formulario.html')
 
 @app.route('/objetos/editar/<objeto_id>', methods=['GET', 'POST'])
 def editar_objeto(objeto_id):
     if not session.get('logueado'):
         return redirect(url_for('iniciar'))
-    
     if request.method == 'POST':
         datos = {
             'numero': request.form.get('numero'),
@@ -237,32 +317,26 @@ def editar_objeto(objeto_id):
             'clase': request.form.get('clase'),
             'obtencion': request.form.get('obtencion'),
             'variaciones': request.form.get('variaciones')
-        }
-        
+        }    
         if gestor.actualizar_objeto(objeto_id, datos):
             flash('Objeto actualizado correctamente', 'success')
         else:
             flash('Error al actualizar el objeto', 'error')
-        
         return redirect(url_for('mis_objetos'))
-    
     objeto = gestor.obtener_objeto_por_id(objeto_id)
     if not objeto:
         flash('Objeto no encontrado', 'error')
         return redirect(url_for('mis_objetos'))
-    
     return render_template('objeto_editar.html', objeto=objeto)
 
 @app.route('/objetos/eliminar/<objeto_id>')
 def eliminar_objeto(objeto_id):
     if not session.get('logueado'):
         return redirect(url_for('iniciar'))
-    
     if gestor.eliminar_objeto(objeto_id):
         flash('Objeto eliminado correctamente', 'success')
     else:
         flash('Error al eliminar el objeto', 'error')
-    
     return redirect(url_for('mis_objetos'))
 
 if __name__ == '__main__':
