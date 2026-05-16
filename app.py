@@ -25,10 +25,10 @@ def validar():
         usuario = gestor.obtener_usuario2(correo, password)
         if usuario:
             session['logueado'] = True
-            session['usuario'] = usuario['nombre']
+            session['usuario'] = usuario['username']
             session['usuario_correo'] = usuario['correo']
             session['usuario_id'] = usuario['_id']
-            flash(f'¡Bienvenido {usuario["nombre"]} a los Backrooms!', 'success')
+            flash(f'¡Bienvenido {usuario["username"]} a los Backrooms!', 'success')
             return redirect(url_for('backrooms_index')) 
         else:
             flash('Usuario o contraseña incorrectos', 'error')
@@ -58,17 +58,16 @@ def recuperar():
 @app.route('/registrar', methods=['GET', 'POST'])
 def registrar():
     if request.method == 'POST':
-        nombre = request.form['nombre']
-        apellido = request.form['apellido']
+        username = request.form['username']
         correo = request.form['correo']
         password = request.form['password']
         confirmPassword = request.form.get("confirmPassword")
         if password != confirmPassword:
             flash("Las contraseñas no coinciden", 'error')
             return render_template('registro.html')
-        usuario_id = gestor.crear_usuario(f"{nombre} {apellido}", correo, password)
+        usuario_id = gestor.crear_usuario(username, correo, password)
         if usuario_id:
-            flash(f"Registro exitoso: {nombre}. Ahora puedes iniciar sesión.", 'success')
+            flash(f"Registro exitoso: {username}. Ahora puedes iniciar sesión.", 'success')
             return redirect(url_for('iniciar'))
         else:
             flash("Este correo ya está registrado", 'error')
@@ -175,6 +174,96 @@ def eliminar_nivel(nivel_id):
     else:
         flash('Error al eliminar el nivel', 'error')   
     return redirect(url_for('mis_niveles'))
+
+# ============ RUTAS DE OBJETOS ============
+
+@app.route('/objetos')
+def objetos_index():
+    if not session.get('logueado'):
+        return redirect(url_for('iniciar'))
+    objetos = gestor.obtener_objetos()
+    return render_template('objetos_index.html', objetos=objetos)
+
+@app.route('/mis_objetos')
+def mis_objetos():
+    if not session.get('logueado'):
+        return redirect(url_for('iniciar'))
+    usuario_id = session.get('usuario_id')
+    objetos = gestor.obtener_objetos(usuario_id)
+    return render_template('mis_objetos.html', objetos=objetos)
+
+@app.route('/objetos/agregar', methods=['GET', 'POST'])
+def agregar_objeto():
+    if not session.get('logueado'):
+        return redirect(url_for('iniciar'))
+    
+    if request.method == 'POST':
+        datos = {
+            'numero': request.form.get('numero'),
+            'nombre': request.form.get('nombre'),
+            'descripcion': request.form.get('descripcion'),
+            'localizacion': request.form.get('localizacion'),
+            'rareza': request.form.get('rareza'),
+            'clase': request.form.get('clase'),
+            'obtencion': request.form.get('obtencion'),
+            'variaciones': request.form.get('variaciones')
+        }
+        
+        if gestor.obtener_objeto_por_numero(int(datos['numero'])):
+            flash(f'El objeto #{datos["numero"]} ya existe en la base de datos', 'error')
+            return render_template('objeto_formulario.html')
+        
+        objeto_id = gestor.crear_objeto(session['usuario_id'], datos)
+        if objeto_id:
+            flash(f'¡Objeto {datos["nombre"]} añadido correctamente!', 'success')
+            return redirect(url_for('objetos_index'))
+        else:
+            flash('Error al crear el objeto', 'error')
+    
+    return render_template('objeto_formulario.html')
+
+@app.route('/objetos/editar/<objeto_id>', methods=['GET', 'POST'])
+def editar_objeto(objeto_id):
+    if not session.get('logueado'):
+        return redirect(url_for('iniciar'))
+    
+    if request.method == 'POST':
+        datos = {
+            'numero': request.form.get('numero'),
+            'nombre': request.form.get('nombre'),
+            'descripcion': request.form.get('descripcion'),
+            'localizacion': request.form.get('localizacion'),
+            'rareza': request.form.get('rareza'),
+            'clase': request.form.get('clase'),
+            'obtencion': request.form.get('obtencion'),
+            'variaciones': request.form.get('variaciones')
+        }
+        
+        if gestor.actualizar_objeto(objeto_id, datos):
+            flash('Objeto actualizado correctamente', 'success')
+        else:
+            flash('Error al actualizar el objeto', 'error')
+        
+        return redirect(url_for('mis_objetos'))
+    
+    objeto = gestor.obtener_objeto_por_id(objeto_id)
+    if not objeto:
+        flash('Objeto no encontrado', 'error')
+        return redirect(url_for('mis_objetos'))
+    
+    return render_template('objeto_editar.html', objeto=objeto)
+
+@app.route('/objetos/eliminar/<objeto_id>')
+def eliminar_objeto(objeto_id):
+    if not session.get('logueado'):
+        return redirect(url_for('iniciar'))
+    
+    if gestor.eliminar_objeto(objeto_id):
+        flash('Objeto eliminado correctamente', 'success')
+    else:
+        flash('Error al eliminar el objeto', 'error')
+    
+    return redirect(url_for('mis_objetos'))
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Mis Objetos{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Mis Objetos de Backrooms</h1>
+</div>
+
+<div class="btn-group mb-4">
+    <a href="/objetos" class="btn btn-outline-primary">Todos</a>
+    <a href="/mis_objetos" class="btn btn-primary active">Mis Objetos</a>
+    <a href="/objetos/agregar" class="btn btn-success">Agregar Objeto</a>
+    <a href="/backrooms" class="btn btn-outline-secondary">Volver a Niveles</a>
+</div>
+
+{% if objetos %}
+<div class="row">
+    {% for objeto in objetos %}
+    <div class="col-md-6 mb-4 col-lg-4">
+        <div class="card1 card h-100">
+            <div class="card-header">
+                <h3 class="mb-0">Objeto #{{ objeto.numero }}: {{ objeto.nombre }}</h3>
+            </div>
+            <div class="card-body">
+                <!-- Rareza con colores -->
+                <span class="badge 
+                    {% if objeto.rareza == 'Unico' %}bg-dark
+                    {% elif objeto.rareza == 'Inevitable de encontrar' %}bg-success
+                    {% elif objeto.rareza == 'extremadamnete raro' %}bg-danger
+                    {% elif objeto.rareza == 'muy raro' %}bg-danger
+                    {% elif objeto.rareza == 'bastante raro' %}bg-warning text-dark
+                    {% elif objeto.rareza == 'Raro' %}bg-warning text-dark
+                    {% elif objeto.rareza == 'bastante infrecuente' %}bg-info text-dark
+                    {% elif objeto.rareza == 'media' %}bg-info text-dark
+                    {% elif objeto.rareza == 'Poco comun' %}bg-info text-dark
+                    {% elif objeto.rareza == 'medianamente comun' %}bg-primary
+                    {% elif objeto.rareza == 'comun' %}bg-secondary
+                    {% elif objeto.rareza == 'distribuido' %}bg-secondary
+                    {% elif objeto.rareza == 'Desconocida' %}bg-dark
+                    {% elif objeto.rareza == 'variable' %}bg-secondary
+                    {% else %}bg-dark{% endif %} mb-3">
+                    Rareza: {{ objeto.rareza or 'No especificada' }}
+                </span>
+
+                <!-- Clase con colores: verde = positivo, gris = neutral, rojo = negativo -->
+                <span class="badge 
+                    {% if objeto.clase == 'positiva' %}bg-success
+                    {% elif objeto.clase == 'Neutra' %}bg-secondary
+                    {% elif objeto.clase == 'negativo' %}bg-danger
+                    {% else %}bg-dark{% endif %} mb-3 ms-2">
+                    Clase: {{ objeto.clase or 'No especificada' }}
+                </span>
+
+                <p class="text-light"><strong>Localizacion:</strong> {{ objeto.localizacion or 'Desconocida' }}</p>
+
+                <details class="mb-3">
+                    <summary>Obtencion</summary>
+                    <p class="text-light mt-2">{{ objeto.obtencion or 'No especificada' }}</p>
+                </details>
+
+                {% if objeto.variaciones and objeto.variaciones|length > 0 %}
+                <details class="mb-3">
+                    <summary>Variaciones</summary>
+                    <ul class="text-light mt-2">
+                        {% for variacion in objeto.variaciones %}
+                        <li>{{ variacion }}</li>
+                        {% endfor %}
+                    </ul>
+                </details>
+                {% endif %}
+
+                <details>
+                    <summary>Descripcion</summary>
+                    <p class="text-light mt-2">{{ objeto.descripcion }}</p>
+                </details>
+            </div>
+            <div class="card-footer">
+                <a href="/objetos/editar/{{ objeto._id }}" class="btn btn-warning btn-sm">Editar</a>
+                <a href="/objetos/eliminar/{{ objeto._id }}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este objeto?')">Eliminar</a>
+                <small class="float-end text-muted">Creado: {{ objeto.fecha_creacion.strftime('%d/%m/%Y') }}</small>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">
+    No has creado ningun objeto aun.
+    <a href="/objetos/agregar" class="alert-link">Crea tu primer objeto!</a>
+</div>
+{% endif %}
+{% endblock %}

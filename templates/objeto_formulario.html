@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Agregar Objeto{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Agregar Nuevo Objeto de Backrooms</h1>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card card1">
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label text-white">Numero del objeto *</label>
+                        <input type="number" class="form-control" name="numero" required min="0">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-white">Nombre del objeto *</label>
+                        <input type="text" class="form-control" name="nombre" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-white">Descripcion *</label>
+                        <textarea class="form-control" name="descripcion" rows="4" required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-white">Localizacion</label>
+                        <input type="text" class="form-control" name="localizacion" placeholder="Ej: Nivel 0, Nivel 1, Todos los niveles">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-white">Rareza</label>
+                        <select class="form-select" name="rareza">
+                            <option value="">Seleccionar...</option>
+                            <option value="Desconocida">Desconocida</option>   
+                            <option value="distribuido">distribuido</option>     
+                            <option value="comun">Comun</option>
+                            <option value="medianamente comun">Medianamente comun</option>
+                            <option value="Poco comun">Poco comun</option>
+                            <option value="media">Media</option>       
+                            <option value="Raro">Raro</option>
+                            <option value="bastante raro">Bastante raro</option>
+                            <option value="muy raro">Muy raro</option>
+                            <option value="extremadamnete raro">Extremadamnete raro</option>                            
+                            <option value="bastante infrecuente">Bastante infrecuente</option>
+                            <option value="variable">Variable</option>
+                            <option value="Unico">Unico</option>
+                            <option value="Inevitable de encontrar">Inevitable de encontrar</option>
+
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-white">Clase</label>
+                        <select class="form-select" name="clase">
+                            <option value="">Seleccionar...</option>
+                            <option value="positiva">Positivo</option>
+                            <option value="Neutra">Neutral</option>
+                            <option value="negativo">Negativo</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-white">Obtencion</label>
+                        <textarea class="form-control" name="obtencion" rows="2" placeholder="Como se consigue este objeto?"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-white">Variaciones (separadas por comas)</label>
+                        <input type="text" class="form-control" name="variaciones" placeholder="Ej: Version azul, Version roja, Version oxidada">
+                        <small class="text-muted">Separa cada variacion con una coma</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Guardar Objeto</button>
+                    <a href="/objetos" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -13,6 +13,7 @@ class GestorBackrooms:
             self.db = self.cliente['backrooms_db']
             self.niveles = self.db['niveles']
             self.usuarios = self.db['usuarios']
+            self.objetos = self.db['objetos']  
             self._crear_indices()
             print("✅ Conectado a MongoDB Atlas (Backrooms)")
         except ConnectionFailure:
@@ -22,16 +23,17 @@ class GestorBackrooms:
     def _crear_indices(self):
         self.niveles.create_index("numero", unique=True)
         self.niveles.create_index([("usuario_id", 1), ("fecha_creacion", -1)])
+        self.objetos.create_index("numero", unique=True)  # INDICE PARA OBJETOS
         self.usuarios.create_index("correo", unique=True)
     
-    def crear_usuario(self, nombre: str, correo: str, password: str) -> Optional[str]:
+    def crear_usuario(self, username: str, correo: str, password: str) -> Optional[str]:
         try:
             password_ed = bcrypt.hashpw(
                 password.encode('utf-8'),
                 bcrypt.gensalt()
             ).decode('utf-8')
             resultado = self.usuarios.insert_one({
-                "nombre": nombre,
+                "username": username,
                 "correo": correo,
                 "password": password_ed,
                 "fecha_registro": datetime.now(),
@@ -176,6 +178,80 @@ class GestorBackrooms:
     
     def eliminar_nivel(self, nivel_id: str) -> bool:
         resultado = self.niveles.delete_one({"_id": ObjectId(nivel_id)})
+        return resultado.deleted_count > 0
+    
+    def crear_objeto(self, usuario_id: str, datos: dict) -> Optional[str]:
+        try:
+            variaciones = []
+            if datos.get('variaciones'):
+                variaciones = [v.strip() for v in datos.get('variaciones', '').split(',') if v.strip()]
+            objeto = {
+                "usuario_id": ObjectId(usuario_id),
+                "numero": int(datos['numero']),
+                "nombre": datos['nombre'],
+                "descripcion": datos['descripcion'],
+                "localizacion": datos.get('localizacion', ''),
+                "rareza": datos.get('rareza', ''),
+                "clase": datos.get('clase', ''),
+                "obtencion": datos.get('obtencion', ''),
+                "variaciones": variaciones,
+                "fecha_creacion": datetime.now()
+            }
+            resultado = self.objetos.insert_one(objeto)
+            return str(resultado.inserted_id)
+        except DuplicateKeyError:
+            print(f"Error: El objeto {datos['numero']} ya existe")
+            return None
+    
+    def obtener_objetos(self, usuario_id: Optional[str] = None) -> List[Dict]:
+        filtro = {}
+        if usuario_id:
+            filtro = {"usuario_id": ObjectId(usuario_id)}
+        objetos = self.objetos.find(filtro).sort("numero", 1)
+        resultado = []
+        for o in objetos:
+            o['_id'] = str(o['_id'])
+            o['usuario_id'] = str(o['usuario_id'])
+            resultado.append(o)
+        return resultado
+    
+    def obtener_objeto_por_id(self, objeto_id: str) -> Optional[Dict]:
+        objeto = self.objetos.find_one({"_id": ObjectId(objeto_id)})
+        if objeto:
+            objeto['_id'] = str(objeto['_id'])
+            objeto['usuario_id'] = str(objeto['usuario_id'])
+        return objeto
+    
+    def obtener_objeto_por_numero(self, numero: int) -> Optional[Dict]:
+        objeto = self.objetos.find_one({"numero": numero})
+        if objeto:
+            objeto['_id'] = str(objeto['_id'])
+            objeto['usuario_id'] = str(objeto['usuario_id'])
+        return objeto
+    
+    def actualizar_objeto(self, objeto_id: str, datos: dict) -> bool:
+        variaciones = []
+        if datos.get('variaciones'):
+            variaciones = [v.strip() for v in datos.get('variaciones', '').split(',') if v.strip()]
+        
+        resultado = self.objetos.update_one(
+            {"_id": ObjectId(objeto_id)},
+            {"$set": {
+                "numero": int(datos['numero']),
+                "nombre": datos['nombre'],
+                "descripcion": datos['descripcion'],
+                "localizacion": datos.get('localizacion', ''),
+                "rareza": datos.get('rareza', ''),
+                "clase": datos.get('clase', ''),
+                "obtencion": datos.get('obtencion', ''),
+                "variaciones": variaciones,
+                "fecha_actualizacion": datetime.now()
+            }}
+        )
+        return resultado.modified_count > 0
+    
+    def eliminar_objeto(self, objeto_id: str) -> bool:
+        resultado = self.objetos.delete_one({"_id": ObjectId(objeto_id)})
         return resultado.deleted_count > 0
     
     def cerrar_conexion(self):
