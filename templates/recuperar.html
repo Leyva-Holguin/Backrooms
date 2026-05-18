@@ -5,19 +5,19 @@
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-6">
-        <div class="card card1">
-            <div class="card-header text-center">
+        <div class="ini1 card">
+            <div class="card-header init2 text-white text-center">
                 <h2>Recuperar Contraseña</h2>
             </div>
             <div class="card-body">
-                <p class="text-center">Ingresa tu correo electrónico y te enviaremos un código para restablecer tu contraseña.</p>
+                <p class="text-center text-muted">Ingresa tu correo electrónico y te enviaremos un código para restablecer tu contraseña.</p>
                 
                 <form method="POST" action="/recuperarr">
                     <div class="mb-3">
-                        <label class="form-label text-white">Correo electrónico</label>
-                        <input type="email" class="form-control" name="correor" required>
+                        <label class="form-label text-light">Correo electrónico</label>
+                        <input type="email" class="form-control" name="correor" placeholder="Ingrese su correo electronico" required>
                     </div>
-                    <button type="submit" class="btn btn-warning w-100">Enviar Código</button>
+                    <button type="submit" class="btn btn-warning text-muted w-100">Enviar Código</button>
                 </form>
                 
                 <hr>
