@@ -28,13 +28,11 @@
                         <input type="password" class="form-control" name="password" required
                         placeholder="Crea una contraseña segura"
                         pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                        title="Debe contener al menos un número, una mayúscula y tener mínimo 8 caracteres"
-                        value="{{ request.form.get('password', '')}}">
+                        title="Debe contener al menos un número, una mayúscula y tener mínimo 8 caracteres">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Confirmar Contraseña</label>
-                        <input type="password" class="form-control" name="confirmPassword" required placeholder="Repite tu contraseña"
-                        value="{{ request.form.get('confirmPassword', '')}}">
+                        <input type="password" class="form-control" name="confirmPassword" required placeholder="Repite tu contraseña">
                     </div>
                     <button type="submit" class="btn btn-warning text-muted w-100">Registrarse</button>
                 </form>
