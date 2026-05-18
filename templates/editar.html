@@ -14,11 +14,11 @@
                 <form method="POST">
                     <div class="mb-3">
                         <label class="form-label text-white">Nombre del nivel *</label>
-                        <input type="text" class="form-control" name="nombre" value="{{ nivel.nombre }}" required>
+                        <input type="text" class="form-control" name="nombre" value="{{ nivel.nombre }}" placeholder="'The Lobby'" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label text-white">Numero del nivel *</label>
-                        <input type="number" class="form-control" name="numero" value="{{ nivel.numero }}" required min="0">
+                        <input type="number" class="form-control" name="numero" value="{{ nivel.numero }}" placeholder="0" required min="0">
                     </div>
                     <div class="mb-3">
                         <label class="form-label text-white">Dificultad de supervivencia *</label>
@@ -38,21 +38,21 @@
                         <div class="card-body">
                             <div class="mb-3">
                                 <label class="form-label text-white">Liquidos</label>
-                                <input type="text" class="form-control" name="liquidos" value="{{ nivel.loot.liquidos or '' }}">
+                                <input type="text" class="form-control" name="liquidos" placeholder="Ej: Agua de almendras" value="{{ nivel.loot.liquidos or '' }}">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label text-white">Comida</label>
-                                <input type="text" class="form-control" name="comida" value="{{ nivel.loot.comida or '' }}">
+                                <input type="text" class="form-control" name="comida" placeholder="Ej: Galletas saladas" value="{{ nivel.loot.comida or '' }}">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label text-white">Otros</label>
-                                <input type="text" class="form-control" name="otros" value="{{ nivel.loot.otros or '' }}">
+                                <input type="text" class="form-control" name="otros" placeholder="Ej: Baterias, linternas" value="{{ nivel.loot.otros or '' }}">
                             </div>
                         </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label text-white">Entidades (separadas por comas)</label>
-                        <input type="text" class="form-control" name="entidades" value="{{ nivel.entidades|join(', ') }}">
+                        <input type="text" class="form-control" name="entidades"  placeholder="Ej: Smiler, Hound, Faceling"" value="{{ nivel.entidades|join(', ') }}">
                     </div>
                     <div class="card mb-3 card3">
                         <div class="card-header drop1 text-light">
@@ -62,27 +62,27 @@
                             {% set eventos = nivel.eventos if nivel.eventos else [] %}
                             <div class="mb-3">
                                 <label class="form-label text-white">Evento 1 - Nombre</label>
-                                <input type="text" class="form-control mb-2" name="evento1_nombre" value="{{ eventos[0]['nombre'] if eventos|length > 0 else '' }}">
+                                <input type="text" class="form-control mb-2" name="evento1_nombre" placeholder="Ej: La habitacion cambia" value="{{ eventos[0]['nombre'] if eventos|length > 0 else '' }}">
                                 <label class="form-label text-white">Descripcion</label>
-                                <textarea class="form-control" name="evento1_descripcion" rows="2">{{ eventos[0]['descripcion'] if eventos|length > 0 else '' }}</textarea>
+                                <textarea class="form-control" name="evento1_descripcion" placeholder="Describe que sucede durante este evento..." rows="2">{{ eventos[0]['descripcion'] if eventos|length > 0 else '' }}</textarea>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label text-white">Evento 2 - Nombre</label>
-                                <input type="text" class="form-control mb-2" name="evento2_nombre" value="{{ eventos[1]['nombre'] if eventos|length > 1 else '' }}">
+                                <input type="text" class="form-control mb-2" name="evento2_nombre" placeholder="Ej: Aparecen entidades" value="{{ eventos[1]['nombre'] if eventos|length > 1 else '' }}">
                                 <label class="form-label text-white">Descripcion</label>
-                                <textarea class="form-control" name="evento2_descripcion" rows="2">{{ eventos[1]['descripcion'] if eventos|length > 1 else '' }}</textarea>
+                                <textarea class="form-control" name="evento2_descripcion" placeholder="Describe que sucede durante este evento..." rows="2">{{ eventos[1]['descripcion'] if eventos|length > 1 else '' }}</textarea>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label text-white">Evento 3 - Nombre</label>
-                                <input type="text" class="form-control mb-2" name="evento3_nombre" value="{{ eventos[2]['nombre'] if eventos|length > 2 else '' }}">
+                                <input type="text" class="form-control mb-2" name="evento3_nombre" placeholder="Ej: El suelo se vuelve liquido" value="{{ eventos[2]['nombre'] if eventos|length > 2 else '' }}">
                                 <label class="form-label text-white">Descripcion</label>
-                                <textarea class="form-control" name="evento3_descripcion" rows="2">{{ eventos[2]['descripcion'] if eventos|length > 2 else '' }}</textarea>
+                                <textarea class="form-control" name="evento3_descripcion" placeholder="Describe que sucede durante este evento..." rows="2">{{ eventos[2]['descripcion'] if eventos|length > 2 else '' }}</textarea>
                             </div>
                         </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label text-white">Descripcion del nivel *</label>
-                        <textarea class="form-control" name="descripcion" rows="5" required>{{ nivel.descripcion }}</textarea>
+                        <textarea class="form-control" name="descripcion" placeholder="Agrega una descripción" rows="5" required>{{ nivel.descripcion }}</textarea>
                     </div>
                     <button type="submit" class="btn btn-success">Guardar Cambios</button>
                     <a href="/mis_niveles" class="btn btn-secondary">Cancelar</a>
