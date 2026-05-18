@@ -14,22 +14,22 @@
                 <form method="POST">
                     <div class="mb-3">
                         <label class="form-label text-white">Numero del objeto *</label>
-                        <input type="number" class="form-control" name="numero" value="{{ objeto.numero }}" required min="0">
+                        <input type="number" class="form-control" name="numero" placeholder="0" value="{{ objeto.numero }}" required min="0">
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label text-white">Nombre del objeto *</label>
-                        <input type="text" class="form-control" name="nombre" value="{{ objeto.nombre }}" required>
+                        <input type="text" class="form-control" name="nombre" placeholder="Ej: Agua de almendras" value="{{ objeto.nombre }}" required>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label text-white">Descripcion *</label>
-                        <textarea class="form-control" name="descripcion" rows="4" required>{{ objeto.descripcion }}</textarea>
+                        <textarea class="form-control" name="descripcion" placeholder="Agrega la descripción del objeto" rows="4" required>{{ objeto.descripcion }}</textarea>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label text-white">Localizacion</label>
-                        <input type="text" class="form-control" name="localizacion" value="{{ objeto.localizacion or '' }}">
+                        <input type="text" class="form-control" name="localizacion" placeholder="Ej: Nivel 0, Nivel 1, Todos los niveles" value="{{ objeto.localizacion or '' }}">
                     </div>
 
                     <div class="mb-3">
@@ -65,16 +65,16 @@
 
                     <div class="mb-3">
                         <label class="form-label text-white">Obtencion</label>
-                        <textarea class="form-control" name="obtencion" rows="2">{{ objeto.obtencion or '' }}</textarea>
+                        <textarea class="form-control" name="obtencion" placeholder="¿Cómo se consigue este objeto?" rows="2">{{ objeto.obtencion or '' }}</textarea>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label text-white">Variaciones (separadas por comas)</label>
-                        <input type="text" class="form-control" name="variaciones" value="{{ objeto.variaciones|join(', ') }}">
+                        <input type="text" class="form-control" name="variaciones" placeholder="Ej: Version azul, Version roja, Version oxidada" value="{{ objeto.variaciones|join(', ') }}">
                         <small class="text-muted">Separa cada variacion con una coma</small>
                     </div>
 
-                    <button type="submit" class="btn btn-warning">Guardar Cambios</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
                     <a href="/mis_objetos" class="btn btn-secondary">Cancelar</a>
                 </form>
             </div>

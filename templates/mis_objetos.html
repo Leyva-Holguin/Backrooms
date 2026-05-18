@@ -68,7 +68,7 @@
                 </details>
             </div>
             <div class="card-footer">
-                <a href="/objetos/editar/{{ objeto._id }}" class="btn btn-warning btn-sm">Editar</a>
+                <a href="/objetos/editar/{{ objeto._id }}" class="btn btn-warning text-muted btn-sm">Editar</a>
                 <a href="/objetos/eliminar/{{ objeto._id }}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este objeto?')">Eliminar</a>
                 <small class="float-end text-muted">Creado: {{ objeto.fecha_creacion.strftime('%d/%m/%Y') }}</small>
             </div>
