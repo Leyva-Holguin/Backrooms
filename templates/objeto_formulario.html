@@ -6,7 +6,6 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Agregar Nuevo Objeto de Backrooms</h1>
 </div>
-
 <div class="row justify-content-center">
     <div class="col-md-8">
         <div class="card card1">
@@ -16,22 +15,18 @@
                         <label class="form-label text-white">Numero del objeto *</label>
                         <input type="number" class="form-control" name="numero" placeholder="0" required min="0">
                     </div>
-
                     <div class="mb-3">
                         <label class="form-label text-white">Nombre del objeto *</label>
                         <input type="text" class="form-control" name="nombre" placeholder="Ej: Agua de almendras" required>
                     </div>
-
                     <div class="mb-3">
                         <label class="form-label text-white">Descripcion *</label>
                         <textarea class="form-control" name="descripcion" placeholder="Agrega la descripción del objeto" rows="4" required></textarea>
                     </div>
-
                     <div class="mb-3">
                         <label class="form-label text-white">Localizacion</label>
                         <input type="text" class="form-control" name="localizacion" placeholder="Ej: Nivel 0, Nivel 1, Todos los niveles">
                     </div>
-
                     <div class="mb-3">
                         <label class="form-label text-white">Rareza</label>
                         <select class="form-select" name="rareza">
@@ -50,10 +45,8 @@
                             <option value="variable">Variable</option>
                             <option value="Unico">Unico</option>
                             <option value="Inevitable de encontrar">Inevitable de encontrar</option>
-
                         </select>
                     </div>
-
                     <div class="mb-3">
                         <label class="form-label text-white">Clase</label>
                         <select class="form-select" name="clase">
@@ -63,18 +56,15 @@
                             <option value="negativo">Negativo</option>
                         </select>
                     </div>
-
                     <div class="mb-3">
                         <label class="form-label text-white">Obtencion</label>
                         <textarea class="form-control" name="obtencion" rows="2" placeholder="¿Cómo se consigue este objeto?"></textarea>
                     </div>
-
                     <div class="mb-3">
                         <label class="form-label text-white">Variaciones (separadas por comas)</label>
                         <input type="text" class="form-control" name="variaciones" placeholder="Ej: Version azul, Version roja, Version oxidada">
                         <small class="text-muted">Separa cada variacion con una coma</small>
                     </div>
-
                     <button type="submit" class="btn btn-success">Guardar Objeto</button>
                     <a href="/objetos" class="btn btn-secondary">Cancelar</a>
                 </form>

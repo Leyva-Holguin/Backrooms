@@ -6,7 +6,6 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Todos los Objetos de Backrooms</h1>
 </div>
-
 {% if objetos %}
 <div class="row">
     {% for objeto in objetos %}
@@ -16,7 +15,6 @@
                 <h3 class="mb-0">Objeto #{{ objeto.numero }}: {{ objeto.nombre }}</h3>
             </div>
             <div class="card-body">
-
                 <span class="badge 
                     {% if objeto.rareza == 'Unico' %}bg-dark
                     {% elif objeto.rareza == 'Inevitable de encontrar' %}bg-success
@@ -35,7 +33,6 @@
                     {% else %}bg-dark{% endif %} mb-3">
                     Rareza: {{ objeto.rareza or 'No especificada' }}
                 </span>
-
                 <span class="badge 
                     {% if objeto.clase == 'positiva' %}bg-success
                     {% elif objeto.clase == 'Neutra' %}bg-secondary
@@ -43,14 +40,11 @@
                     {% else %}bg-dark{% endif %} mb-3 ms-2">
                     Clase: {{ objeto.clase or 'No especificada' }}
                 </span>
-
                 <p class="text-light"><strong>Localizacion:</strong> {{ objeto.localizacion or 'Desconocida' }}</p>
-
                 <details class="mb-3">
                     <summary>Obtencion</summary>
                     <p class="text-light mt-2">{{ objeto.obtencion or 'No especificada' }}</p>
                 </details>
-
                 {% if objeto.variaciones and objeto.variaciones|length > 0 %}
                 <details class="mb-3">
                     <summary>Variaciones</summary>
@@ -61,7 +55,6 @@
                     </ul>
                 </details>
                 {% endif %}
-
                 <details>
                     <summary>Descripcion</summary>
                     <p class="text-light mt-2">{{ objeto.descripcion }}</p>

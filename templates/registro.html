@@ -14,8 +14,7 @@
                     <div class="row">
                         <div class="col-md-12 mb-3">
                             <label class="form-label">Username</label>
-                            <input type="text" class="form-control" name="username" placeholder="FanBackrooms1" required maxlength="16"
-                                    value="{{ request.form.get('username', '')}}">
+                            <input type="text" class="form-control" name="username" placeholder="FanBackrooms1" required maxlength="16"value="{{ request.form.get('username', '')}}">
                         </div>
                     </div>
                     <div class="mb-3">
@@ -25,10 +24,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" name="password" required
-                        placeholder="Crea una contraseña segura"
-                        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                        title="Debe contener al menos un número, una mayúscula y tener mínimo 8 caracteres">
+                        <input type="password" class="form-control" name="password" required placeholder="Crea una contraseña segura" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Debe contener al menos un número, una mayúscula y tener mínimo 8 caracteres">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Confirmar Contraseña</label>

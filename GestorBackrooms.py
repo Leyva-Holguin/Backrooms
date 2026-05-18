@@ -15,17 +15,17 @@ class GestorBackrooms:
             self.usuarios = self.db['usuarios']
             self.objetos = self.db['objetos']  
             self._crear_indices()
-            print("✅ Conectado a MongoDB Atlas (Backrooms)")
+            print("Conectado a MongoDB Atlas (Backrooms)")
         except ConnectionFailure:
-            print("❌ Error: No se pudo conectar a MongoDB Atlas")
+            print("Error: No se pudo conectar a MongoDB Atlas")
             raise
 
     def _crear_indices(self):
         self.niveles.create_index("numero", unique=True)
         self.niveles.create_index([("usuario_id", 1), ("fecha_creacion", -1)])
-        self.objetos.create_index("numero", unique=True)  # INDICE PARA OBJETOS
+        self.objetos.create_index("numero", unique=True)
         self.usuarios.create_index("correo", unique=True)
-    
+
     def crear_usuario(self, username: str, correo: str, password: str) -> Optional[str]:
         try:
             password_ed = bcrypt.hashpw(
@@ -65,7 +65,7 @@ class GestorBackrooms:
         except Exception as e:
             print(f"Error al obtener usuario: {e}")
             return None
-    
+
     def obtener_usuario(self, usuario_id: str) -> Optional[Dict]:
         try:
             usuario = self.usuarios.find_one({"_id": ObjectId(usuario_id)})
@@ -75,7 +75,7 @@ class GestorBackrooms:
         except Exception as e:
             print(f"Error al obtener usuario: {e}")
             return None
-    
+
     def crear_nivel(self, usuario_id: str, datos: dict) -> Optional[str]:
         try:
             eventos = []
@@ -114,7 +114,7 @@ class GestorBackrooms:
         except DuplicateKeyError:
             print(f"Error: El nivel {datos['numero']} ya existe")
             return None
-    
+
     def obtener_niveles(self, usuario_id: Optional[str] = None) -> List[Dict]:
         filtro = {}
         if usuario_id:
@@ -127,21 +127,21 @@ class GestorBackrooms:
             n['usuario_id'] = str(n['usuario_id'])
             resultado.append(n)
         return resultado
-    
+
     def obtener_nivel_por_id(self, nivel_id: str) -> Optional[Dict]:
         nivel = self.niveles.find_one({"_id": ObjectId(nivel_id)})
         if nivel:
             nivel['_id'] = str(nivel['_id'])
             nivel['usuario_id'] = str(nivel['usuario_id'])
         return nivel
-    
+
     def obtener_nivel_por_numero(self, numero: int) -> Optional[Dict]:
         nivel = self.niveles.find_one({"numero": numero})
         if nivel:
             nivel['_id'] = str(nivel['_id'])
             nivel['usuario_id'] = str(nivel['usuario_id'])
         return nivel
-    
+
     def actualizar_nivel(self, nivel_id: str, datos: dict) -> bool:
         eventos = []
         if datos.get('evento1_nombre'):
@@ -175,11 +175,11 @@ class GestorBackrooms:
             }}
         )
         return resultado.modified_count > 0
-    
+
     def eliminar_nivel(self, nivel_id: str) -> bool:
         resultado = self.niveles.delete_one({"_id": ObjectId(nivel_id)})
         return resultado.deleted_count > 0
-    
+
     def crear_objeto(self, usuario_id: str, datos: dict) -> Optional[str]:
         try:
             variaciones = []
@@ -202,7 +202,7 @@ class GestorBackrooms:
         except DuplicateKeyError:
             print(f"Error: El objeto {datos['numero']} ya existe")
             return None
-    
+
     def obtener_objetos(self, usuario_id: Optional[str] = None) -> List[Dict]:
         filtro = {}
         if usuario_id:
@@ -214,26 +214,26 @@ class GestorBackrooms:
             o['usuario_id'] = str(o['usuario_id'])
             resultado.append(o)
         return resultado
-    
+
     def obtener_objeto_por_id(self, objeto_id: str) -> Optional[Dict]:
         objeto = self.objetos.find_one({"_id": ObjectId(objeto_id)})
         if objeto:
             objeto['_id'] = str(objeto['_id'])
             objeto['usuario_id'] = str(objeto['usuario_id'])
         return objeto
-    
+
     def obtener_objeto_por_numero(self, numero: int) -> Optional[Dict]:
         objeto = self.objetos.find_one({"numero": numero})
         if objeto:
             objeto['_id'] = str(objeto['_id'])
             objeto['usuario_id'] = str(objeto['usuario_id'])
         return objeto
-    
+
     def actualizar_objeto(self, objeto_id: str, datos: dict) -> bool:
         variaciones = []
         if datos.get('variaciones'):
             variaciones = [v.strip() for v in datos.get('variaciones', '').split(',') if v.strip()]
-        
+
         resultado = self.objetos.update_one(
             {"_id": ObjectId(objeto_id)},
             {"$set": {
@@ -249,12 +249,12 @@ class GestorBackrooms:
             }}
         )
         return resultado.modified_count > 0
-    
+
     def eliminar_objeto(self, objeto_id: str) -> bool:
         resultado = self.objetos.delete_one({"_id": ObjectId(objeto_id)})
         return resultado.deleted_count > 0
-    
+
     def cerrar_conexion(self):
         if self.cliente:
             self.cliente.close()
-            print("🔌 Conexión cerrada")
+            print("Conexión cerrada")

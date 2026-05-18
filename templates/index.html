@@ -30,19 +30,15 @@
                         <li class="list-group-item card2 text-light">Comida: {{ nivel.loot.comida or 'Ninguna' }}</li>
                         <li class="list-group-item card2 text-light">Otros: {{ nivel.loot.otros or 'Ninguno' }}</li>
                     </ul>
-
                     <div class="col-md-6">
-                    <h5>Entidades:</h5>
-                    <p class="text-light">{{ nivel.entidades|join(', ') or 'Ninguna' }}</p>
+                        <h5>Entidades:</h5>
+                        <p class="text-light">{{ nivel.entidades|join(', ') or 'Ninguna' }}</p>
                     </div>
-
                     {% if nivel.eventos and nivel.eventos|length > 0 %}
-
                     <details class="mb-3">
                         <summary>
                             Eventos
                         </summary>
-                    
                         <div class="list-group list-group-flush mb-3">
                             {% for evento in nivel.eventos %}
                             <div class="list-group-item card2 text-light">
@@ -54,9 +50,7 @@
                     </details>
                     {% endif %}
                     <details>
-                        <summary>
-                            Descripcion
-                        </summary>
+                        <summary>Descripcion</summary>
                     <p class="text-light">{{ nivel.descripcion }}</p>
                     </details>
                 </div>
