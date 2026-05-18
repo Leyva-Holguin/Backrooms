@@ -7,13 +7,6 @@
     <h1>Todos los Objetos de Backrooms</h1>
 </div>
 
-<div class="btn-group mb-4">
-    <a href="/objetos" class="btn btn-primary active">Todos</a>
-    <a href="/mis_objetos" class="btn btn-outline-primary">Mis Objetos</a>
-    <a href="/objetos/agregar" class="btn btn-success">Agregar Objeto</a>
-    <a href="/backrooms" class="btn btn-outline-secondary">Volver a Niveles</a>
-</div>
-
 {% if objetos %}
 <div class="row">
     {% for objeto in objetos %}
@@ -23,17 +16,17 @@
                 <h3 class="mb-0">Objeto #{{ objeto.numero }}: {{ objeto.nombre }}</h3>
             </div>
             <div class="card-body">
-                <!-- Rareza con colores -->
+
                 <span class="badge 
                     {% if objeto.rareza == 'Unico' %}bg-dark
                     {% elif objeto.rareza == 'Inevitable de encontrar' %}bg-success
                     {% elif objeto.rareza == 'extremadamnete raro' %}bg-danger
                     {% elif objeto.rareza == 'muy raro' %}bg-danger
-                    {% elif objeto.rareza == 'bastante raro' %}bg-warning text-dark
-                    {% elif objeto.rareza == 'Raro' %}bg-warning text-dark
-                    {% elif objeto.rareza == 'bastante infrecuente' %}bg-info text-dark
-                    {% elif objeto.rareza == 'media' %}bg-info text-dark
-                    {% elif objeto.rareza == 'Poco comun' %}bg-info text-dark
+                    {% elif objeto.rareza == 'bastante raro' %}bg-warning 
+                    {% elif objeto.rareza == 'Raro' %}bg-warning 
+                    {% elif objeto.rareza == 'bastante infrecuente' %}bg-info 
+                    {% elif objeto.rareza == 'media' %}bg-info
+                    {% elif objeto.rareza == 'Poco comun' %}bg-info
                     {% elif objeto.rareza == 'medianamente comun' %}bg-primary
                     {% elif objeto.rareza == 'comun' %}bg-secondary
                     {% elif objeto.rareza == 'distribuido' %}bg-secondary
@@ -43,7 +36,6 @@
                     Rareza: {{ objeto.rareza or 'No especificada' }}
                 </span>
 
-                <!-- Clase con colores: verde = positivo, gris = neutral, rojo = negativo -->
                 <span class="badge 
                     {% if objeto.clase == 'positiva' %}bg-success
                     {% elif objeto.clase == 'Neutra' %}bg-secondary
