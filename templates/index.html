@@ -7,9 +7,9 @@
     <h1>Todos los Niveles de Backrooms</h1>
 </div>
 {% if niveles %}
-    <div class="row">
+    <div class="row justify-content-center">
         {% for nivel in niveles %}
-        <div class="col-md-6 mb-4 col-lg-4">
+        <div class="col-12 col-md-8 mb-4">
             <div class="card1 card h-100">
                 <div class="card-header">
                     <h3>Nivel {{ nivel.numero }}: {{ nivel.nombre }}</h3>
