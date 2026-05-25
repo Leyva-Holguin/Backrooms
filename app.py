@@ -29,6 +29,11 @@ def index():
         return redirect(url_for('backrooms_index'))
     return render_template('iniciar.html')
 
+@app.route('/nivel_main')
+def nivel_main():
+    niveles = gestor.obtener_niveles()
+    return render_template('nivel_main.html', niveles=niveles, tipo_actual='niveles')
+
 @app.route('/validaLogin', methods=['GET', 'POST'])
 def validar():
     if request.method == "POST":
