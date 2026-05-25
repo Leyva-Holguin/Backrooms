@@ -12,17 +12,18 @@ Nuestro proyecto llamado igualmente Backrooms resuelve este problema permitiendo
 
 •	Editar y corregir información cuando sea necesario
 
-Listado de colecciones de la Base de Datos (MongoDB)
+•	Listado de colecciones de la Base de Datos (MongoDB)
 
 
-Nombre: Daniel Ivan leyva Holguin
+
+**Nombre**: Daniel Ivan leyva Holguin
 
 Grado y grupo: 4-D
 Correo: 24308060610008@cetis61.edu.mx
 
 ![Fotografia](https://github.com/user-attachments/assets/c6f2bb0d-cd8a-4e3c-aad4-55b8e17fb6db)
 
-Nombre: Melannie Abril Pascual Torres
+**Nombre**: Melannie Abril Pascual Torres
 
 Grado y grupo: 4-D
 
