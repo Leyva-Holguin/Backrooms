@@ -253,6 +253,50 @@ class GestorBackrooms:
     def eliminar_objeto(self, objeto_id: str) -> bool:
         resultado = self.objetos.delete_one({"_id": ObjectId(objeto_id)})
         return resultado.deleted_count > 0
+    
+    def buscar_niveles(self, query: str) -> List[Dict]:
+        """Buscar niveles por nombre o numero (sin distinguir mayusculas/minusculas)"""
+        if not query:
+            return self.obtener_niveles()
+        query = query.strip()
+        query_numero = None
+        try:
+            query_numero = int(query)
+        except ValueError:
+            pass
+        if query_numero is not None:
+            busqueda = {"numero": query_numero}
+        else:
+            busqueda = {"nombre": {"$regex": query, "$options": "i"}}
+        niveles = self.niveles.find(busqueda).sort("numero", 1)
+        resultado = []
+        for n in niveles:
+            n['_id'] = str(n['_id'])
+            n['usuario_id'] = str(n['usuario_id'])
+            resultado.append(n)
+        return resultado
+
+    def buscar_objetos(self, query: str) -> List[Dict]:
+        """Buscar objetos por nombre o numero (sin distinguir mayusculas/minusculas)"""
+        if not query:
+            return self.obtener_objetos()
+        query = query.strip()
+        query_numero = None
+        try:
+            query_numero = int(query)
+        except ValueError:
+            pass
+        if query_numero is not None:
+            busqueda = {"numero": query_numero}
+        else:
+            busqueda = {"nombre": {"$regex": query, "$options": "i"}}
+        objetos = self.objetos.find(busqueda).sort("numero", 1)
+        resultado = []
+        for o in objetos:
+            o['_id'] = str(o['_id'])
+            o['usuario_id'] = str(o['usuario_id'])
+            resultado.append(o)
+        return resultado
 
     def cerrar_conexion(self):
         if self.cliente:

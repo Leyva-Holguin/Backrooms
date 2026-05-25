@@ -178,7 +178,7 @@ def backrooms_index():
     if not session.get('logueado'):
         return redirect(url_for('iniciar'))
     niveles = gestor.obtener_niveles()
-    return render_template('index.html', niveles=niveles)
+    return render_template('index.html', niveles=niveles, tipo_actual='niveles')
 
 @app.route('/mis_niveles')
 def mis_niveles():
@@ -267,7 +267,7 @@ def objetos_index():
     if not session.get('logueado'):
         return redirect(url_for('iniciar'))
     objetos = gestor.obtener_objetos()
-    return render_template('objetos_index.html', objetos=objetos)
+    return render_template('objetos_index.html', objetos=objetos, tipo_actual='objetos')
 
 @app.route('/mis_objetos')
 def mis_objetos():
@@ -338,6 +338,21 @@ def eliminar_objeto(objeto_id):
     else:
         flash('Error al eliminar el objeto', 'error')
     return redirect(url_for('mis_objetos'))
+
+@app.route('/buscar')
+def buscar():
+    if not session.get('logueado'):
+        return redirect(url_for('iniciar'))
+    
+    query = request.args.get('q', '').strip()
+    tipo = request.args.get('tipo', 'niveles')
+    
+    if tipo == 'niveles':
+        resultados = gestor.buscar_niveles(query)
+        return render_template('index.html', niveles=resultados, busqueda=query, tipo_actual='niveles', busqueda_actual=query)
+    else:
+        resultados = gestor.buscar_objetos(query)
+        return render_template('objetos_index.html', objetos=resultados, busqueda=query, tipo_actual='objetos', busqueda_actual=query)
 
 if __name__ == '__main__':
     app.run(debug=True)
