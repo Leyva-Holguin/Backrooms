@@ -255,7 +255,6 @@ class GestorBackrooms:
         return resultado.deleted_count > 0
     
     def buscar_niveles(self, query: str) -> List[Dict]:
-        """Buscar niveles por nombre o numero (sin distinguir mayusculas/minusculas)"""
         if not query:
             return self.obtener_niveles()
         query = query.strip()
@@ -277,7 +276,6 @@ class GestorBackrooms:
         return resultado
 
     def buscar_objetos(self, query: str) -> List[Dict]:
-        """Buscar objetos por nombre o numero (sin distinguir mayusculas/minusculas)"""
         if not query:
             return self.obtener_objetos()
         query = query.strip()

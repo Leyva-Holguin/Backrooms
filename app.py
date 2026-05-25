@@ -70,7 +70,7 @@ def recuperarr():
         codigo = ''.join(random.choices(string.digits, k=6))
         codigos_recuperacion[correo] = {
             'codigo': codigo,
-            'expira': datetime.now() + timedelta(minutes=10)
+            'expira': datetime.now() + timedelta(minutes=5)
         }
         try:
             msg = Message('Recuperación de contraseña - Backrooms')
@@ -343,10 +343,8 @@ def eliminar_objeto(objeto_id):
 def buscar():
     if not session.get('logueado'):
         return redirect(url_for('iniciar'))
-    
     query = request.args.get('q', '').strip()
     tipo = request.args.get('tipo', 'niveles')
-    
     if tipo == 'niveles':
         resultados = gestor.buscar_niveles(query)
         return render_template('index.html', niveles=resultados, busqueda=query, tipo_actual='niveles', busqueda_actual=query)
