@@ -14,8 +14,6 @@ Nuestro proyecto llamado igualmente Backrooms resuelve este problema permitiendo
 
 •	Listado de colecciones de la Base de Datos (MongoDB)
 
-
-
 **Nombre**: Daniel Ivan leyva Holguin
 
 Grado y grupo: 4-D
