@@ -8,9 +8,9 @@
 </div>
 
 {% if busqueda %}
-<div class="alert alert-info mb-4">
+<div class="alert alert-primary mb-4">
     Resultados de búsqueda para: <strong>"{{ busqueda }}"</strong>
-    <a href="{{ url_for('backrooms_index') }}" class="float-end text-light">Limpiar búsqueda</a>
+    <a href="{{ url_for('backrooms_index') }}" class="float-end">Limpiar búsqueda</a>
 </div>
 {% endif %}
 
