@@ -1,4 +1,4 @@
-Descripcion del proyecto:
+# Descripcion del proyecto:
 Los Backrooms son un fenómeno de internet creepypasta que describe un universo paralelo compuesto por niveles infinitos, cada uno con sus propias reglas, peligros, entidades y recursos. Actualmente, la información sobre estos niveles se encuentra dispersa en wikis, foros y videos, sin una plataforma centralizada donde los exploradores puedan documentar y consultar los niveles de manera ordenada y colaborativa.
 Nuestro proyecto llamado igualmente Backrooms resuelve este problema permitiendo a los usuarios:
 
