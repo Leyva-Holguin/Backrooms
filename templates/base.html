@@ -25,12 +25,12 @@
                         {% if session.get('logueado') %}
                         <div class="d-flex justify-content-center flex-grow-1">
                             <form class="d-flex gap-2 align-items-center" role="search" action="{{ url_for('buscar') }}" method="GET" style="width: 550px;">
-                                <select class="form-select py-1 w-auto" name="tipo" style="font-size: 0.85rem; height: 32px;">
+                                <select class="input form-select py-1 w-auto" name="tipo">
                                     <option value="niveles" {% if tipo_actual == 'niveles' %}selected{% endif %}>Niveles</option>
                                     <option value="objetos" {% if tipo_actual == 'objetos' %}selected{% endif %}>Objetos</option>
                                 </select>
-                                <input class="form-control py-1" type="search" name="q" placeholder="Buscar por nombre o número..." value="{{ busqueda_actual if busqueda_actual else '' }}" style="font-size: 0.85rem; height: 32px;">
-                                <button class="btn btn-outline-success py-0" type="submit" style="font-size: 0.85rem; height: 32px;">Buscar
+                                <input class="input form-control py-1" type="search" name="q" placeholder="Buscar por nombre o número..." value="{{ busqueda_actual if busqueda_actual else '' }}">
+                                <button class="btn btn-success py-0" type="submit"><i class="bi bi-search"></i>
                                 </button>
                             </form>
                         </div>

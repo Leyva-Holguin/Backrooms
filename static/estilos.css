@@ -1,5 +1,8 @@
 body {
-    background-image: url("img/original.jpg");
+    background-image: 
+    linear-gradient(#7063238c, #241711b3),
+    url("img/original.jpg");
+
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -7,7 +10,7 @@ body {
 }
 
 .nav1 {
-    background-color: #312520;
+    background-color: #471d27;
 }
 
 .drop1 {
@@ -15,7 +18,7 @@ body {
 }
 
 .card1 {
-    background-color: #c1ae65;
+    background-color: #d2be96;
 }
 
 .card2 {
@@ -31,9 +34,13 @@ body {
 }
 
 .ini1 {
-    background-color: #b9be92;
+    background-color: #C3A978;
 }
 
 .ini2 {
-    background-color: #a5a87e;
+    background-color: #E0D8C3;
+}
+
+.input {
+    background-color: #e7e9e1;
 }

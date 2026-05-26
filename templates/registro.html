@@ -14,21 +14,21 @@
                     <div class="row">
                         <div class="col-md-12 mb-3">
                             <label class="form-label">Username</label>
-                            <input type="text" class="form-control" name="username" placeholder="FanBackrooms1" required maxlength="16"value="{{ request.form.get('username', '')}}">
+                            <input type="text" class="input form-control" name="username" placeholder="FanBackrooms1" required maxlength="16"value="{{ request.form.get('username', '')}}">
                         </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Correo electrónico</label>
-                        <input type="email" class="form-control" name="correo" placeholder="jose123@correo.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                        <input type="email" class="input form-control" name="correo" placeholder="jose123@correo.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                         required value="{{ request.form.get('correo', '')}}" >
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" name="password" required placeholder="Crea una contraseña segura" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Debe contener al menos un número, una mayúscula y tener mínimo 8 caracteres">
+                        <input type="password" class="input form-control" name="password" required placeholder="Crea una contraseña segura" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Debe contener al menos un número, una mayúscula y tener mínimo 8 caracteres">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Confirmar Contraseña</label>
-                        <input type="password" class="form-control" name="confirmPassword" required placeholder="Repite tu contraseña">
+                        <input type="password" class="input form-control" name="confirmPassword" required placeholder="Repite tu contraseña">
                     </div>
                     <button type="submit" class="btn btn-warning text-muted w-100">Registrarse</button>
                 </form>
