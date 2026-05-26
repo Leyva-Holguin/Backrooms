@@ -1,6 +1,6 @@
 body {
     background-image: 
-    linear-gradient(#7063238c, #241711b3),
+    linear-gradient(#baab6390, #4c2d20a9),
     url("img/original.jpg");
 
     background-size: cover;
@@ -10,7 +10,7 @@ body {
 }
 
 .nav1 {
-    background-color: #471d27;
+    background-color: #632937;
 }
 
 .drop1 {
