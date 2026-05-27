@@ -5,7 +5,6 @@
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Editar Nivel {{ nivel.numero }}: {{ nivel.nombre }}</h1>
-    <a href="/mis_niveles" class="btn btn-secondary">Volver</a>
 </div>
 <div class="row justify-content-center">
     <div class="col-md-8">
@@ -14,11 +13,11 @@
                 <form method="POST">
                     <div class="mb-3">
                         <label class="form-label text-white">Nombre del nivel</label>
-                        <input type="text" class="input form-control" name="nombre" value="{{ nivel.nombre }}" required>
+                        <input type="text" class="input form-control" name="nombre" placeholder="The Lobby" value="{{ nivel.nombre }}" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label text-white">Numero del nivel</label>
-                        <input type="number" class="input form-control" name="numero" value="{{ nivel.numero }}" required min="0">
+                        <input type="number" class="input form-control" name="numero" value="{{ nivel.numero }}" placeholder="0" required min="0">
                     </div>
                     <div class="mb-3">
                         <label class="form-label text-white">URL de la imagen principal</label>
@@ -52,15 +51,15 @@
                         <div class="card-body">
                             <div class="mb-3">
                                 <label class="form-label text-white">Color de fondo (hexadecimal)</label>
-                                <input type="text" class="input form-control" name="color_fondo" value="{{ nivel.color_fondo or '#16213e' }}" pattern="^#[0-9A-Fa-f]{6}$" title="Debe ser un color hexadecimal como #16213e">
+                                <input type="text" class="input form-control" name="color_fondo" placeholder="#16213e" value="{{ nivel.color_fondo or '#16213e' }}" pattern="^#[0-9A-Fa-f]{6}$" title="Debe ser un color hexadecimal como #16213e">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label text-white">Color de los cuadros (hexadecimal)</label>
-                                <input type="text" class="input form-control" name="color_card" value="{{ nivel.color_card or '#0f3460' }}" pattern="^#[0-9A-Fa-f]{6}$" title="Debe ser un color hexadecimal como #0f3460">
+                                <input type="text" class="input form-control" name="color_card" placeholder="#0f3460" value="{{ nivel.color_card or '#0f3460' }}" pattern="^#[0-9A-Fa-f]{6}$" title="Debe ser un color hexadecimal como #0f3460">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label text-white">Color del texto (hexadecimal)</label>
-                                <input type="text" class="input form-control" name="color_texto" value="{{ nivel.color_texto or '#ffffff' }}" pattern="^#[0-9A-Fa-f]{6}$" title="Debe ser un color hexadecimal como #ffffff">
+                                <input type="text" class="input form-control" name="color_texto" placeholder="#ffffff" value="{{ nivel.color_texto or '#ffffff' }}" pattern="^#[0-9A-Fa-f]{6}$" title="Debe ser un color hexadecimal como #ffffff">
                             </div>
                         </div>
                     </div>
@@ -72,32 +71,32 @@
                         <div class="card-body">
                             <div class="mb-3">
                                 <label class="form-label text-white">Liquidos</label>
-                                <input type="text" class="input form-control" name="liquidos" value="{{ nivel.loot.liquidos or '' }}">
+                                <input type="text" class="input form-control" placeholder="Ej: Agua de almendras" name="liquidos" value="{{ nivel.loot.liquidos or '' }}">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label text-white">Comida</label>
-                                <input type="text" class="input form-control" name="comida" value="{{ nivel.loot.comida or '' }}">
+                                <input type="text" class="input form-control" placeholder="Ej: Galletas saladas" name="comida" value="{{ nivel.loot.comida or '' }}">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label text-white">Otros</label>
-                                <input type="text" class="input form-control" name="otros" value="{{ nivel.loot.otros or '' }}">
+                                <input type="text" class="input form-control" placeholder="Ej: Baterias, linternas" name="otros" value="{{ nivel.loot.otros or '' }}">
                             </div>
                         </div>
                     </div>
                     
                     <div class="mb-3">
                         <label class="form-label text-white">Entidades (separadas por comas)</label>
-                        <input type="text" class="input form-control" name="entidades" value="{{ nivel.entidades|join(', ') }}">
+                        <input type="text" class="input form-control" name="entidades" placeholder="Ej: Smiler, Hound, Faceling" value="{{ nivel.entidades|join(', ') }}">
                     </div>
                     
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label text-white">Entradas</label>
-                            <textarea class="input form-control" name="entradas" rows="3">{{ nivel.entradas or '' }}</textarea>
+                            <textarea class="input form-control" name="entradas" placeholder="Como se accede a este nivel..." rows="3">{{ nivel.entradas or '' }}</textarea>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label text-white">Salidas</label>
-                            <textarea class="input form-control" name="salidas" rows="3">{{ nivel.salidas or '' }}</textarea>
+                            <textarea class="input form-control" name="salidas" placeholder="Como salir de este nivel..." rows="3">{{ nivel.salidas or '' }}</textarea>
                         </div>
                     </div>
                     
@@ -109,28 +108,28 @@
                             {% set eventos = nivel.eventos if nivel.eventos else [] %}
                             <div class="mb-3">
                                 <label class="form-label text-white">Evento 1 - Nombre</label>
-                                <input type="text" class="input form-control mb-2" name="evento1_nombre" value="{{ eventos[0]['nombre'] if eventos|length > 0 else '' }}">
+                                <input type="text" class="input form-control mb-2" name="evento1_nombre" placeholder="Ej: La habitacion cambia" value="{{ eventos[0]['nombre'] if eventos|length > 0 else '' }}">
                                 <label class="form-label text-white">Descripcion</label>
-                                <textarea class="input form-control" name="evento1_descripcion" rows="2">{{ eventos[0]['descripcion'] if eventos|length > 0 else '' }}</textarea>
+                                <textarea class="input form-control" name="evento1_descripcion" placeholder="Describe que sucede durante este evento..." rows="2">{{ eventos[0]['descripcion'] if eventos|length > 0 else '' }}</textarea>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label text-white">Evento 2 - Nombre</label>
-                                <input type="text" class="input form-control mb-2" name="evento2_nombre" value="{{ eventos[1]['nombre'] if eventos|length > 1 else '' }}">
+                                <input type="text" class="input form-control mb-2" name="evento2_nombre" placeholder="Ej: Aparecen entidades" value="{{ eventos[1]['nombre'] if eventos|length > 1 else '' }}">
                                 <label class="form-label text-white">Descripcion</label>
-                                <textarea class="input form-control" name="evento2_descripcion" rows="2">{{ eventos[1]['descripcion'] if eventos|length > 1 else '' }}</textarea>
+                                <textarea class="input form-control" name="evento2_descripcion" placeholder="Describe que sucede durante este evento..." rows="2">{{ eventos[1]['descripcion'] if eventos|length > 1 else '' }}</textarea>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label text-white">Evento 3 - Nombre</label>
-                                <input type="text" class="input form-control mb-2" name="evento3_nombre" value="{{ eventos[2]['nombre'] if eventos|length > 2 else '' }}">
+                                <input type="text" class="input form-control mb-2" name="evento3_nombre" placeholder="Ej: El suelo se vuelve liquido" value="{{ eventos[2]['nombre'] if eventos|length > 2 else '' }}">
                                 <label class="form-label text-white">Descripcion</label>
-                                <textarea class="input form-control" name="evento3_descripcion" rows="2">{{ eventos[2]['descripcion'] if eventos|length > 2 else '' }}</textarea>
+                                <textarea class="input form-control" name="evento3_descripcion" placeholder="Describe que sucede durante este evento..." rows="2">{{ eventos[2]['descripcion'] if eventos|length > 2 else '' }}</textarea>
                             </div>
                         </div>
                     </div>
                     
                     <div class="mb-3">
                         <label class="form-label text-white">Descripcion del nivel</label>
-                        <textarea class="input form-control" name="descripcion" rows="5" required>{{ nivel.descripcion }}</textarea>
+                        <textarea class="input form-control" name="descripcion" rows="5" placeholder="Agrega una descripción"  required>{{ nivel.descripcion }}</textarea>
                     </div>
                     
                     <button type="submit" class="btn btn-success">Guardar Cambios</button>
