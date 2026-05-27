@@ -29,11 +29,6 @@ def index():
         return redirect(url_for('backrooms_index'))
     return render_template('iniciar.html')
 
-@app.route('/nivel_main')
-def nivel_main():
-    niveles = gestor.obtener_niveles()
-    return render_template('nivel_main.html', niveles=niveles, tipo_actual='niveles')
-
 @app.route('/validaLogin', methods=['GET', 'POST'])
 def validar():
     if request.method == "POST":
@@ -183,6 +178,8 @@ def backrooms_index():
     if not session.get('logueado'):
         return redirect(url_for('iniciar'))
     niveles = gestor.obtener_niveles()
+    for nivel in niveles:
+        nivel['creador'] = gestor.obtener_nombre_usuario(nivel['usuario_id'])
     return render_template('index.html', niveles=niveles, tipo_actual='niveles')
 
 @app.route('/mis_niveles')
@@ -191,6 +188,8 @@ def mis_niveles():
         return redirect(url_for('iniciar'))
     usuario_id = session.get('usuario_id')
     niveles = gestor.obtener_niveles(usuario_id)
+    for nivel in niveles:
+        nivel['creador'] = session.get('usuario')
     return render_template('mis_niveles.html', niveles=niveles)
 
 @app.route('/agregar', methods=['GET', 'POST'])
@@ -199,27 +198,34 @@ def agregar_nivel():
         return redirect(url_for('iniciar'))
     if request.method == 'POST':
         datos = {
-            'nombre': request.form.get('nombre'),
-            'numero': request.form.get('numero'),
-            'peligro': request.form.get('peligro'),
-            'liquidos': request.form.get('liquidos'),
-            'comida': request.form.get('comida'),
-            'otros': request.form.get('otros'),
-            'entidades': request.form.get('entidades'),
-            'descripcion': request.form.get('descripcion'),
-            'evento1_nombre': request.form.get('evento1_nombre'),
-            'evento1_descripcion': request.form.get('evento1_descripcion'),
-            'evento2_nombre': request.form.get('evento2_nombre'),
-            'evento2_descripcion': request.form.get('evento2_descripcion'),
-            'evento3_nombre': request.form.get('evento3_nombre'),
-            'evento3_descripcion': request.form.get('evento3_descripcion')
-        }
+        'nombre': request.form.get('nombre'),
+        'numero': request.form.get('numero'),
+        'peligro': request.form.get('peligro'),
+        'liquidos': request.form.get('liquidos'),
+        'comida': request.form.get('comida'),
+        'otros': request.form.get('otros'),
+        'entidades': request.form.get('entidades'),
+        'entradas': request.form.get('entradas'),
+        'salidas': request.form.get('salidas'),
+        'descripcion': request.form.get('descripcion'),
+        'imagen_url': request.form.get('imagen_url'),
+        'imagen_fondo_url': request.form.get('imagen_fondo_url'),
+        'color_fondo': request.form.get('color_fondo', '#16213e'),
+        'color_card': request.form.get('color_card', '#0f3460'),
+        'color_texto': request.form.get('color_texto', '#ffffff'),
+        'evento1_nombre': request.form.get('evento1_nombre'),
+        'evento1_descripcion': request.form.get('evento1_descripcion'),
+        'evento2_nombre': request.form.get('evento2_nombre'),
+        'evento2_descripcion': request.form.get('evento2_descripcion'),
+        'evento3_nombre': request.form.get('evento3_nombre'),
+        'evento3_descripcion': request.form.get('evento3_descripcion') }
+        
         if gestor.obtener_nivel_por_numero(int(datos['numero'])):
             flash(f'El nivel {datos["numero"]} ya existe en los Backrooms', 'error')
             return render_template('formulario.html')
         nivel_id = gestor.crear_nivel(session['usuario_id'], datos)
         if nivel_id:
-            flash(f'¡Nivel {datos["nombre"]} añadido correctamente!', 'success')
+            flash(f'Nivel {datos["nombre"]} añadido correctamente', 'success')
             return redirect(url_for('backrooms_index'))
         else:
             flash('Error al crear el nivel', 'error')
@@ -231,21 +237,28 @@ def editar_nivel(nivel_id):
         return redirect(url_for('iniciar'))
     if request.method == 'POST':
         datos = {
-            'nombre': request.form.get('nombre'),
-            'numero': request.form.get('numero'),
-            'peligro': request.form.get('peligro'),
-            'liquidos': request.form.get('liquidos'),
-            'comida': request.form.get('comida'),
-            'otros': request.form.get('otros'),
-            'entidades': request.form.get('entidades'),
-            'descripcion': request.form.get('descripcion'),
-            'evento1_nombre': request.form.get('evento1_nombre'),
-            'evento1_descripcion': request.form.get('evento1_descripcion'),
-            'evento2_nombre': request.form.get('evento2_nombre'),
-            'evento2_descripcion': request.form.get('evento2_descripcion'),
-            'evento3_nombre': request.form.get('evento3_nombre'),
-            'evento3_descripcion': request.form.get('evento3_descripcion')
-        }
+        'nombre': request.form.get('nombre'),
+        'numero': request.form.get('numero'),
+        'peligro': request.form.get('peligro'),
+        'liquidos': request.form.get('liquidos'),
+        'comida': request.form.get('comida'),
+        'otros': request.form.get('otros'),
+        'entidades': request.form.get('entidades'),
+        'entradas': request.form.get('entradas'),
+        'salidas': request.form.get('salidas'),
+        'descripcion': request.form.get('descripcion'),
+        'imagen_url': request.form.get('imagen_url'),
+        'imagen_fondo_url': request.form.get('imagen_fondo_url'),
+        'color_fondo': request.form.get('color_fondo', '#16213e'),
+        'color_card': request.form.get('color_card', '#0f3460'),
+        'color_texto': request.form.get('color_texto', '#ffffff'),
+        'evento1_nombre': request.form.get('evento1_nombre'),
+        'evento1_descripcion': request.form.get('evento1_descripcion'),
+        'evento2_nombre': request.form.get('evento2_nombre'),
+        'evento2_descripcion': request.form.get('evento2_descripcion'),
+        'evento3_nombre': request.form.get('evento3_nombre'),
+        'evento3_descripcion': request.form.get('evento3_descripcion')
+    }
         if gestor.actualizar_nivel(nivel_id, datos):
             flash('Nivel actualizado correctamente', 'success')
         else:
@@ -352,10 +365,23 @@ def buscar():
     tipo = request.args.get('tipo', 'niveles')
     if tipo == 'niveles':
         resultados = gestor.buscar_niveles(query)
+        for nivel in resultados:
+            nivel['creador'] = gestor.obtener_nombre_usuario(nivel['usuario_id'])
         return render_template('index.html', niveles=resultados, busqueda=query, tipo_actual='niveles', busqueda_actual=query)
     else:
         resultados = gestor.buscar_objetos(query)
         return render_template('objetos_index.html', objetos=resultados, busqueda=query, tipo_actual='objetos', busqueda_actual=query)
+
+@app.route('/nivel/<nivel_id>')
+def ver_nivel(nivel_id):
+    if not session.get('logueado'):
+        return redirect(url_for('iniciar'))
+    nivel = gestor.obtener_nivel_por_id(nivel_id)
+    if not nivel:
+        flash('Nivel no encontrado', 'error')
+        return redirect(url_for('backrooms_index'))
+    nivel['creador'] = gestor.obtener_nombre_usuario(nivel['usuario_id'])
+    return render_template('nivel_detalle.html', nivel=nivel, tipo_actual='niveles')
 
 if __name__ == '__main__':
     app.run(debug=True)

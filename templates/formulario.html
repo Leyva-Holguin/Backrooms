@@ -12,15 +12,25 @@
             <div class="card-body">
                 <form method="POST">
                     <div class="mb-3">
-                        <label class="form-label text-white">Nombre del nivel *</label>
-                        <input type="text" class="form-control" name="nombre" placeholder="'The Lobby'" required>
+                        <label class="form-label text-white">Nombre del nivel</label>
+                        <input type="text" class="form-control" name="nombre" placeholder="The Lobby" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label text-white">Numero del nivel *</label>
+                        <label class="form-label text-white">Numero del nivel</label>
                         <input type="number" class="form-control" name="numero" placeholder="0" required min="0">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label text-white">Dificultad de supervivencia *</label>
+                        <label class="form-label text-white">URL de la imagen principal</label>
+                        <input type="url" class="form-control" name="imagen_url" placeholder="https://picsum.photos/300/200">
+                        <small class="text-muted">Usa https://picsum.photos/ para pruebas o ImgBB para tus imagenes</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-white">URL de la imagen de fondo</label>
+                        <input type="url" class="form-control" name="imagen_fondo_url" placeholder="https://picsum.photos/800/600">
+                        <small class="text-muted">Opcional - Imagen de fondo para la pagina del nivel</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-white">Dificultad de supervivencia</label>
                         <select class="form-select" name="peligro" required>
                             <option value="0">0 - Seguro</option>
                             <option value="1">1 - Seguro</option>
@@ -30,6 +40,28 @@
                             <option value="5">5 - Extremo</option>
                         </select>
                     </div>
+                    
+                    <div class="card mb-3 card3">
+                        <div class="card-header drop1 text-white">
+                            <h5 class="mb-0">Personalizacion de colores</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label text-white">Color de fondo (hex, rgb, hsl)</label>
+                                <input type="text" class="form-control" name="color_fondo" placeholder="#16213e" value="#16213e">
+                                <small class="text-muted">Ejemplos: #16213e / rgb(22,33,62) / hsl(225,47%,16%)</small>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-white">Color de los cuadros (hex, rgb, hsl)</label>
+                                <input type="text" class="form-control" name="color_card" placeholder="#0f3460" value="#0f3460">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-white">Color del texto (hex, rgb, hsl)</label>
+                                <input type="text" class="form-control" name="color_texto" placeholder="#ffffff" value="#ffffff">
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="card mb-3 card3">
                         <div class="card-header drop1 text-white">
                             <h5 class="mb-0">Loot disponible</h5>
@@ -49,11 +81,26 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div class="mb-3">
                         <label class="form-label text-white">Entidades (separadas por comas)</label>
                         <input type="text" class="form-control" name="entidades" placeholder="Ej: Smiler, Hound, Faceling">
                         <small class="text-muted">Separa cada entidad con una coma</small>
                     </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-white">Entradas</label>
+                            <textarea class="form-control" name="entradas" rows="3" placeholder="Como se accede a este nivel..."></textarea>
+                            <small class="text-muted">Ej: Agacharse en el Nivel 0, encontrar una puerta verde...</small>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-white">Salidas</label>
+                            <textarea class="form-control" name="salidas" rows="3" placeholder="Como salir de este nivel..."></textarea>
+                            <small class="text-muted">Ej: Encontrar una salida marcada, atravesar una puerta...</small>
+                        </div>
+                    </div>
+                    
                     <div class="card mb-3 card3">
                         <div class="card-header drop1 text-light">
                             <h5 class="mb-0">Eventos del nivel (maximo 3)</h5>
@@ -79,10 +126,12 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div class="mb-3">
-                        <label class="form-label text-white">Descripcion del nivel *</label>
+                        <label class="form-label text-white">Descripcion del nivel</label>
                         <textarea class="form-control" name="descripcion" placeholder="Agrega una descripción" rows="5" required></textarea>
                     </div>
+                    
                     <button type="submit" class="btn btn-success">Guardar Nivel</button>
                     <a href="/backrooms" class="btn btn-secondary">Cancelar</a>
                 </form>

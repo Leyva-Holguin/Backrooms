@@ -29,7 +29,7 @@
                                     <option value="niveles" {% if tipo_actual == 'niveles' %}selected{% endif %}>Niveles</option>
                                     <option value="objetos" {% if tipo_actual == 'objetos' %}selected{% endif %}>Objetos</option>
                                 </select>
-                                <input class="input form-control py-1" type="search" name="q" placeholder="Buscar por nombre o número..." value="{{ busqueda_actual if busqueda_actual else '' }}">
+                                <input class="input form-control py-1" type="search" name="q" placeholder="Buscar por nombre o numero..." value="{{ busqueda_actual if busqueda_actual else '' }}">
                                 <button class="btn btn-success py-0" type="submit"><i class="bi bi-search"></i>
                                 </button>
                             </form>
@@ -60,12 +60,9 @@
                                     <li><a class="dropdown-item" href="{{ url_for('agregar_objeto') }}">
                                         <i class="bi bi-plus-circle"></i> Agregar objeto
                                     </a></li>
-                                    <li><a class="dropdown-item" href="{{ url_for('nivel_main') }}">
-                                        <i class="bi bi-plus-circle"></i> prueba
-                                    </a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item text-danger" href="{{ url_for('logout') }}">
-                                        <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+                                        <i class="bi bi-box-arrow-right"></i> Cerrar Sesion
                                     </a></li>
                                 </ul>
                             </li>
@@ -91,7 +88,7 @@
         </main>
         <footer class="nav1 text-light text-center px-0 py-4 mt-4 w-100">
             <div class="col-12">
-                <h6>@Todos los derechos reservados 2026</h6>
+                <h6>Todos los derechos reservados 2026</h6>
             </div>
         </footer>
     </div>

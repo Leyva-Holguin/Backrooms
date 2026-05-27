@@ -106,7 +106,14 @@ class GestorBackrooms:
                 },
                 "entidades": [e.strip() for e in datos.get('entidades', '').split(',') if e.strip()],
                 "eventos": eventos,
+                "entradas": datos.get('entradas', ''),
+                "salidas": datos.get('salidas', ''),
                 "descripcion": datos['descripcion'],
+                "imagen_url": datos.get('imagen_url', ''),
+                "imagen_fondo_url": datos.get('imagen_fondo_url', ''),
+                "color_fondo": datos.get('color_fondo', '#16213e'),
+                "color_card": datos.get('color_card', '#0f3460'),
+                "color_texto": datos.get('color_texto', '#ffffff'),
                 "fecha_creacion": datetime.now()
             }
             resultado = self.niveles.insert_one(nivel)
@@ -170,7 +177,14 @@ class GestorBackrooms:
                 "loot.otros": datos.get('otros', ''),
                 "entidades": [e.strip() for e in datos.get('entidades', '').split(',') if e.strip()],
                 "eventos": eventos,
+                "entradas": datos.get('entradas', ''),
+                "salidas": datos.get('salidas', ''),
                 "descripcion": datos['descripcion'],
+                "imagen_url": datos.get('imagen_url', ''),
+                "imagen_fondo_url": datos.get('imagen_fondo_url', ''),
+                "color_fondo": datos.get('color_fondo', '#16213e'),
+                "color_card": datos.get('color_card', '#0f3460'),
+                "color_texto": datos.get('color_texto', '#ffffff'),
                 "fecha_actualizacion": datetime.now()
             }}
         )
@@ -296,6 +310,16 @@ class GestorBackrooms:
             resultado.append(o)
         return resultado
 
+    def obtener_nombre_usuario(self, usuario_id: str) -> str:
+        try:
+            usuario = self.usuarios.find_one({"_id": ObjectId(usuario_id)})
+            if usuario:
+                return usuario.get('username', 'Usuario desconocido')
+            return 'Usuario desconocido'
+        except Exception as e:
+            print(f"Error al obtener nombre de usuario: {e}")
+            return 'Usuario desconocido'
+    
     def cerrar_conexion(self):
         if self.cliente:
             self.cliente.close()
