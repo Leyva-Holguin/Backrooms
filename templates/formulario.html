@@ -47,17 +47,17 @@
                         </div>
                         <div class="card-body">
                             <div class="mb-3">
-                                <label class="form-label text-white">Color de fondo (hex, rgb, hsl)</label>
-                                <input type="text" class="form-control" name="color_fondo" placeholder="#16213e" value="#16213e">
-                                <small class="text-muted">Ejemplos: #16213e / rgb(22,33,62) / hsl(225,47%,16%)</small>
+                                <label class="form-label text-white">Color de fondo (hexadecimal)</label>
+                                <input type="text" class="form-control" name="color_fondo" placeholder="#16213e" value="#16213e" pattern="^#[0-9A-Fa-f]{6}$" title="Debe ser un color hexadecimal como #16213e">
+                                <small class="text-muted">Ejemplo: #16213e</small>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label text-white">Color de los cuadros (hex, rgb, hsl)</label>
-                                <input type="text" class="form-control" name="color_card" placeholder="#0f3460" value="#0f3460">
+                                <label class="form-label text-white">Color de los cuadros (hexadecimal)</label>
+                                <input type="text" class="form-control" name="color_card" placeholder="#0f3460" value="#0f3460" pattern="^#[0-9A-Fa-f]{6}$" title="Debe ser un color hexadecimal como #0f3460">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label text-white">Color del texto (hex, rgb, hsl)</label>
-                                <input type="text" class="form-control" name="color_texto" placeholder="#ffffff" value="#ffffff">
+                                <label class="form-label text-white">Color del texto (hexadecimal)</label>
+                                <input type="text" class="form-control" name="color_texto" placeholder="#ffffff" value="#ffffff" pattern="^#[0-9A-Fa-f]{6}$" title="Debe ser un color hexadecimal como #ffffff">
                             </div>
                         </div>
                     </div>

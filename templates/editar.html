@@ -51,16 +51,16 @@
                         </div>
                         <div class="card-body">
                             <div class="mb-3">
-                                <label class="form-label text-white">Color de fondo</label>
-                                <input type="text" class="form-control" name="color_fondo" value="{{ nivel.color_fondo or '#16213e' }}">
+                                <label class="form-label text-white">Color de fondo (hexadecimal)</label>
+                                <input type="text" class="form-control" name="color_fondo" value="{{ nivel.color_fondo or '#16213e' }}" pattern="^#[0-9A-Fa-f]{6}$" title="Debe ser un color hexadecimal como #16213e">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label text-white">Color de los cuadros</label>
-                                <input type="text" class="form-control" name="color_card" value="{{ nivel.color_card or '#0f3460' }}">
+                                <label class="form-label text-white">Color de los cuadros (hexadecimal)</label>
+                                <input type="text" class="form-control" name="color_card" value="{{ nivel.color_card or '#0f3460' }}" pattern="^#[0-9A-Fa-f]{6}$" title="Debe ser un color hexadecimal como #0f3460">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label text-white">Color del texto</label>
-                                <input type="text" class="form-control" name="color_texto" value="{{ nivel.color_texto or '#ffffff' }}">
+                                <label class="form-label text-white">Color del texto (hexadecimal)</label>
+                                <input type="text" class="form-control" name="color_texto" value="{{ nivel.color_texto or '#ffffff' }}" pattern="^#[0-9A-Fa-f]{6}$" title="Debe ser un color hexadecimal como #ffffff">
                             </div>
                         </div>
                     </div>
