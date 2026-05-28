@@ -101,7 +101,7 @@ def perfil():
 def cambiar_nombre():
     if not session.get('logueado'):
         return redirect(url_for('iniciar'))
-    
+
     nuevo_nombre = request.form.get('nuevo_nombre', '').strip()
     if not nuevo_nombre:
         flash('El nombre no puede estar vacío', 'error')
@@ -119,7 +119,7 @@ def cambiar_nombre():
     
     session['usuario'] = nuevo_nombre
     flash('Nombre actualizado correctamente', 'success')
-    return redirect(url_for('perfil'))
+    return redirect(url_for('index'))
 
 # ==================== RECUPERACION DE CONTRASEÑA ====================
 
