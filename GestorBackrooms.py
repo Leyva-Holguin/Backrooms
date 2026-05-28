@@ -197,8 +197,21 @@ class GestorBackrooms:
     def crear_objeto(self, usuario_id: str, datos: dict) -> Optional[str]:
         try:
             variaciones = []
-            if datos.get('variaciones'):
-                variaciones = [v.strip() for v in datos.get('variaciones', '').split(',') if v.strip()]
+            if datos.get('variacion1_nombre'):
+                variaciones.append({
+                    "nombre": datos['variacion1_nombre'],
+                    "descripcion": datos.get('variacion1_descripcion', '')
+                })
+            if datos.get('variacion2_nombre'):
+                variaciones.append({
+                    "nombre": datos['variacion2_nombre'],
+                    "descripcion": datos.get('variacion2_descripcion', '')
+                })
+            if datos.get('variacion3_nombre'):
+                variaciones.append({
+                    "nombre": datos['variacion3_nombre'],
+                    "descripcion": datos.get('variacion3_descripcion', '')
+                })
             objeto = {
                 "usuario_id": ObjectId(usuario_id),
                 "numero": int(datos['numero']),
@@ -209,6 +222,10 @@ class GestorBackrooms:
                 "clase": datos.get('clase', ''),
                 "obtencion": datos.get('obtencion', ''),
                 "variaciones": variaciones,
+                "imagen_url": datos.get('imagen_url', ''),
+                "color_fondo": datos.get('color_fondo', '#16213e'),
+                "color_card": datos.get('color_card', '#0f3460'),
+                "color_texto": datos.get('color_texto', '#ffffff'),
                 "fecha_creacion": datetime.now()
             }
             resultado = self.objetos.insert_one(objeto)
@@ -245,9 +262,21 @@ class GestorBackrooms:
 
     def actualizar_objeto(self, objeto_id: str, datos: dict) -> bool:
         variaciones = []
-        if datos.get('variaciones'):
-            variaciones = [v.strip() for v in datos.get('variaciones', '').split(',') if v.strip()]
-
+        if datos.get('variacion1_nombre'):
+            variaciones.append({
+                "nombre": datos['variacion1_nombre'],
+                "descripcion": datos.get('variacion1_descripcion', '')
+            })
+        if datos.get('variacion2_nombre'):
+            variaciones.append({
+                "nombre": datos['variacion2_nombre'],
+                "descripcion": datos.get('variacion2_descripcion', '')
+            })
+        if datos.get('variacion3_nombre'):
+            variaciones.append({
+                "nombre": datos['variacion3_nombre'],
+                "descripcion": datos.get('variacion3_descripcion', '')
+            })
         resultado = self.objetos.update_one(
             {"_id": ObjectId(objeto_id)},
             {"$set": {
@@ -259,6 +288,10 @@ class GestorBackrooms:
                 "clase": datos.get('clase', ''),
                 "obtencion": datos.get('obtencion', ''),
                 "variaciones": variaciones,
+                "imagen_url": datos.get('imagen_url', ''),
+                "color_fondo": datos.get('color_fondo', '#16213e'),
+                "color_card": datos.get('color_card', '#0f3460'),
+                "color_texto": datos.get('color_texto', '#ffffff'),
                 "fecha_actualizacion": datetime.now()
             }}
         )
