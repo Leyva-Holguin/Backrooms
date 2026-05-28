@@ -8,77 +8,41 @@
 </div>
 
 {% if busqueda %}
-<div class="alert alert-info mb-4">
-    Resultados de búsqueda para: <strong>"{{ busqueda }}"</strong>
-    <a href="{{ url_for('objetos_index') }}" class="float-end text-light">Limpiar búsqueda</a>
+<div class="alert alert-primary mb-4">
+    Resultados de busqueda para: "{{ busqueda }}"
+    <a href="{{ url_for('objetos_index') }}" class="float-end">Limpiar busqueda</a>
 </div>
 {% endif %}
 
 {% if objetos %}
-<div class="row justify-content-center">
-    {% for objeto in objetos %}
-    <div class="col-12 col-md-9 mb-4">
-        <div class="card1 card h-100">
-            <div class="card-header">
-                <h3 class="mb-0">Objeto #{{ objeto.numero }}: {{ objeto.nombre }}</h3>
-            </div>
-            <div class="card-body">
-                <span class="badge 
-                    {% if objeto.rareza == 'Unico' %}bg-dark
-                    {% elif objeto.rareza == 'Inevitable de encontrar' %}bg-success
-                    {% elif objeto.rareza == 'extremadamnete raro' %}bg-danger
-                    {% elif objeto.rareza == 'muy raro' %}bg-danger
-                    {% elif objeto.rareza == 'bastante raro' %}bg-warning 
-                    {% elif objeto.rareza == 'Raro' %}bg-warning 
-                    {% elif objeto.rareza == 'bastante infrecuente' %}bg-info 
-                    {% elif objeto.rareza == 'media' %}bg-info
-                    {% elif objeto.rareza == 'Poco comun' %}bg-info
-                    {% elif objeto.rareza == 'medianamente comun' %}bg-primary
-                    {% elif objeto.rareza == 'comun' %}bg-secondary
-                    {% elif objeto.rareza == 'distribuido' %}bg-secondary
-                    {% elif objeto.rareza == 'Desconocida' %}bg-dark
-                    {% elif objeto.rareza == 'variable' %}bg-secondary
-                    {% else %}bg-dark{% endif %} mb-3">
-                    Rareza: {{ objeto.rareza or 'No especificada' }}
-                </span>
-                <span class="badge 
-                    {% if objeto.clase == 'positiva' %}bg-success
-                    {% elif objeto.clase == 'Neutra' %}bg-secondary
-                    {% elif objeto.clase == 'negativo' %}bg-danger
-                    {% else %}bg-dark{% endif %} mb-3 ms-2">
-                    Clase: {{ objeto.clase or 'No especificada' }}
-                </span>
-                <p class="text-light"><strong>Localizacion:</strong> {{ objeto.localizacion or 'Desconocida' }}</p>
-                <details class="mb-3">
-                    <summary>Obtencion</summary>
-                    <p class="text-light mt-2">{{ objeto.obtencion or 'No especificada' }}</p>
-                </details>
-                {% if objeto.variaciones and objeto.variaciones|length > 0 %}
-                <details class="mb-3">
-                    <summary>Variaciones</summary>
-                    <ul class="text-light mt-2">
-                        {% for variacion in objeto.variaciones %}
-                        <li>{{ variacion }}</li>
-                        {% endfor %}
-                    </ul>
-                </details>
-                {% endif %}
-                <details>
-                    <summary>Descripcion</summary>
-                    <p class="text-light mt-2">{{ objeto.descripcion }}</p>
-                </details>
-            </div>
-            <div class="card-footer text-muted">
-                <small>Creado: {{ objeto.fecha_creacion.strftime('%d/%m/%Y') }}</small>
-            </div>
+    <div class="row">
+        {% for objeto in objetos %}
+        <div class="col-12 col-md-4 col-lg-3 mb-4">
+            <a href="{{ url_for('ver_objeto', objeto_id=objeto._id) }}" class="text-decoration-none">
+                <div class="card h-100 border-secondary" style="background-color: {{ objeto.color_card or '#0f3460' }};">
+                    {% if objeto.imagen_url %}
+                    <img src="{{ objeto.imagen_url }}" class="card-img-top" alt="{{ objeto.nombre }}" style="height: 200px; object-fit: cover;">
+                    {% else %}
+                    <div class="card-img-top d-flex align-items-center justify-content-center" style="height: 200px; background-color: {{ objeto.color_fondo or '#16213e' }};">
+                        <i class="bi bi-box fs-1 text-muted"></i>
+                    </div>
+                    {% endif %}
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-light" style="color: {{ objeto.color_texto or '#ffffff' }};">Objeto #{{ objeto.numero }}</h5>
+                        <p class="card-text text-light" style="color: {{ objeto.color_texto or '#ffffff' }};">{{ objeto.nombre }}</p>
+                    </div>
+                    <div class="card-footer text-muted" style="background-color: {{ objeto.color_card or '#0f3460' }}; border-top: 1px solid rgba(255,255,255,0.1);">
+                        <small class="text-light">Creado: {{ objeto.fecha_creacion.strftime('%d/%m/%Y') }} por {{ objeto.creador }}</small>
+                    </div>
+                </div>
+            </a>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
-</div>
 {% else %}
     {% if busqueda %}
     <div class="alert alert-warning mb-4">
-        No se encontraron resultados para <strong>"{{ busqueda }}"</strong>. 
+        No se encontraron resultados para "{{ busqueda }}". 
         <a href="{{ url_for('objetos_index') }}" class="alert-link">Ver todos los objetos</a>
     </div>
     {% else %}

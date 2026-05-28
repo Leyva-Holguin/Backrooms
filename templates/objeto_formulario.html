@@ -20,6 +20,11 @@
                         <input type="text" class="form-control" name="nombre" placeholder="Ej: Agua de almendras" required>
                     </div>
                     <div class="mb-3">
+                        <label class="form-label text-white">URL de la imagen</label>
+                        <input type="url" class="form-control" name="imagen_url" placeholder="https://picsum.photos/300/200">
+                        <small class="text-muted">Usa https://picsum.photos/ para pruebas o ImgBB para tus imagenes</small>
+                    </div>
+                    <div class="mb-3">
                         <label class="form-label text-white">Descripcion *</label>
                         <textarea class="form-control" name="descripcion" placeholder="Agrega la descripción del objeto" rows="4" required></textarea>
                     </div>
@@ -60,11 +65,54 @@
                         <label class="form-label text-white">Obtencion</label>
                         <textarea class="form-control" name="obtencion" rows="2" placeholder="¿Cómo se consigue este objeto?"></textarea>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label text-white">Variaciones (separadas por comas)</label>
-                        <input type="text" class="form-control" name="variaciones" placeholder="Ej: Version azul, Version roja, Version oxidada">
-                        <small class="text-muted">Separa cada variacion con una coma</small>
+                    
+                    <div class="card mb-3 card3">
+                        <div class="card-header drop1 text-white">
+                            <h5 class="mb-0">Personalizacion de colores</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label text-white">Color de fondo (hexadecimal)</label>
+                                <input type="text" class="form-control" name="color_fondo" placeholder="#16213e" value="#16213e" pattern="^#[0-9A-Fa-f]{6}$" title="Debe ser un color hexadecimal como #16213e">
+                                <small class="text-muted">Ejemplo: #16213e</small>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-white">Color de los cuadros (hexadecimal)</label>
+                                <input type="text" class="form-control" name="color_card" placeholder="#0f3460" value="#0f3460" pattern="^#[0-9A-Fa-f]{6}$" title="Debe ser un color hexadecimal como #0f3460">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-white">Color del texto (hexadecimal)</label>
+                                <input type="text" class="form-control" name="color_texto" placeholder="#ffffff" value="#ffffff" pattern="^#[0-9A-Fa-f]{6}$" title="Debe ser un color hexadecimal como #ffffff">
+                            </div>
+                        </div>
                     </div>
+                    
+                    <div class="card mb-3 card3">
+                        <div class="card-header drop1 text-light">
+                            <h5 class="mb-0">Variaciones (maximo 3)</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label text-white">Variacion 1 - Nombre</label>
+                                <input type="text" class="form-control mb-2" name="variacion1_nombre" placeholder="Ej: Version azul">
+                                <label class="form-label text-white">Descripcion</label>
+                                <textarea class="form-control" name="variacion1_descripcion" rows="2" placeholder="Describe esta variacion..."></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-white">Variacion 2 - Nombre</label>
+                                <input type="text" class="form-control mb-2" name="variacion2_nombre" placeholder="Ej: Version roja">
+                                <label class="form-label text-white">Descripcion</label>
+                                <textarea class="form-control" name="variacion2_descripcion" rows="2" placeholder="Describe esta variacion..."></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-white">Variacion 3 - Nombre</label>
+                                <input type="text" class="form-control mb-2" name="variacion3_nombre" placeholder="Ej: Version oxidada">
+                                <label class="form-label text-white">Descripcion</label>
+                                <textarea class="form-control" name="variacion3_descripcion" rows="2" placeholder="Describe esta variacion..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <button type="submit" class="btn btn-success">Guardar Objeto</button>
                     <a href="/objetos" class="btn btn-secondary">Cancelar</a>
                 </form>

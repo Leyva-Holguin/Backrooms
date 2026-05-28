@@ -5,6 +5,7 @@
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Editar Objeto #{{ objeto.numero }}: {{ objeto.nombre }}</h1>
+    <a href="/mis_objetos" class="btn btn-secondary">Volver</a>
 </div>
 <div class="row justify-content-center">
     <div class="col-md-8">
@@ -18,6 +19,16 @@
                     <div class="mb-3">
                         <label class="form-label text-white">Nombre del objeto *</label>
                         <input type="text" class="form-control" name="nombre" placeholder="Ej: Agua de almendras" value="{{ objeto.nombre }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-white">URL de la imagen</label>
+                        <input type="url" class="form-control" name="imagen_url" placeholder="https://picsum.photos/300/200" value="{{ objeto.imagen_url or '' }}">
+                        <small class="text-muted">Usa https://picsum.photos/ para pruebas o ImgBB para tus imagenes</small>
+                        {% if objeto.imagen_url %}
+                        <div class="mt-2">
+                            <img src="{{ objeto.imagen_url }}" style="max-height: 100px; border-radius: 5px;">
+                        </div>
+                        {% endif %}
                     </div>
                     <div class="mb-3">
                         <label class="form-label text-white">Descripcion *</label>
@@ -58,13 +69,56 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label text-white">Obtencion</label>
-                        <textarea class="form-control" name="obtencion" placeholder="¿Cómo se consigue este objeto?" rows="2">{{ objeto.obtencion or '' }}</textarea>
+                        <textarea class="form-control" name="obtencion" rows="2" placeholder="¿Cómo se consigue este objeto?">{{ objeto.obtencion or '' }}</textarea>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label text-white">Variaciones (separadas por comas)</label>
-                        <input type="text" class="form-control" name="variaciones" placeholder="Ej: Version azul, Version roja, Version oxidada" value="{{ objeto.variaciones|join(', ') }}">
-                        <small class="text-muted">Separa cada variacion con una coma</small>
+                    
+                    <div class="card mb-3 card3">
+                        <div class="card-header drop1 text-white">
+                            <h5 class="mb-0">Personalizacion de colores</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label text-white">Color de fondo (hexadecimal)</label>
+                                <input type="text" class="form-control" name="color_fondo" value="{{ objeto.color_fondo or '#16213e' }}" pattern="^#[0-9A-Fa-f]{6}$" title="Debe ser un color hexadecimal como #16213e">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-white">Color de los cuadros (hexadecimal)</label>
+                                <input type="text" class="form-control" name="color_card" value="{{ objeto.color_card or '#0f3460' }}" pattern="^#[0-9A-Fa-f]{6}$" title="Debe ser un color hexadecimal como #0f3460">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-white">Color del texto (hexadecimal)</label>
+                                <input type="text" class="form-control" name="color_texto" value="{{ objeto.color_texto or '#ffffff' }}" pattern="^#[0-9A-Fa-f]{6}$" title="Debe ser un color hexadecimal como #ffffff">
+                            </div>
+                        </div>
                     </div>
+                    
+                    <div class="card mb-3 card3">
+                        <div class="card-header drop1 text-light">
+                            <h5 class="mb-0">Variaciones (maximo 3)</h5>
+                        </div>
+                        <div class="card-body">
+                            {% set variaciones = objeto.variaciones if objeto.variaciones else [] %}
+                            <div class="mb-3">
+                                <label class="form-label text-white">Variacion 1 - Nombre</label>
+                                <input type="text" class="form-control mb-2" name="variacion1_nombre" placeholder="Ej: Version azul" value="{{ variaciones[0]['nombre'] if variaciones|length > 0 else '' }}">
+                                <label class="form-label text-white">Descripcion</label>
+                                <textarea class="form-control" name="variacion1_descripcion" rows="2" placeholder="Describe esta variacion...">{{ variaciones[0]['descripcion'] if variaciones|length > 0 else '' }}</textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-white">Variacion 2 - Nombre</label>
+                                <input type="text" class="form-control mb-2" name="variacion2_nombre" placeholder="Ej: Version roja" value="{{ variaciones[1]['nombre'] if variaciones|length > 1 else '' }}">
+                                <label class="form-label text-white">Descripcion</label>
+                                <textarea class="form-control" name="variacion2_descripcion" rows="2" placeholder="Describe esta variacion...">{{ variaciones[1]['descripcion'] if variaciones|length > 1 else '' }}</textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-white">Variacion 3 - Nombre</label>
+                                <input type="text" class="form-control mb-2" name="variacion3_nombre" placeholder="Ej: Version oxidada" value="{{ variaciones[2]['nombre'] if variaciones|length > 2 else '' }}">
+                                <label class="form-label text-white">Descripcion</label>
+                                <textarea class="form-control" name="variacion3_descripcion" rows="2" placeholder="Describe esta variacion...">{{ variaciones[2]['descripcion'] if variaciones|length > 2 else '' }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <button type="submit" class="btn btn-success">Guardar Cambios</button>
                     <a href="/mis_objetos" class="btn btn-secondary">Cancelar</a>
                 </form>
