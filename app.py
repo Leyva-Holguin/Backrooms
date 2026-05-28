@@ -23,8 +23,16 @@ mail = Mail(app)
 
 gestor = GestorBackrooms()
 
+# ==================== AUTENTICACION ====================
+
 @app.route('/')
 def index():
+    if session.get('logueado'):
+        return redirect(url_for('backrooms_index'))
+    return render_template('iniciar.html')
+
+@app.route('/iniciar')
+def iniciar():
     if session.get('logueado'):
         return redirect(url_for('backrooms_index'))
     return render_template('iniciar.html')
@@ -54,7 +62,72 @@ def validar():
 def registro():
     return render_template('registro.html')
 
+@app.route('/registrar', methods=['GET', 'POST'])
+def registrar():
+    if request.method == 'POST':
+        username = request.form['username']
+        correo = request.form['correo']
+        password = request.form['password']
+        confirmPassword = request.form.get("confirmPassword")
+        if password != confirmPassword:
+            flash("Las contraseñas no coinciden", 'error')
+            return render_template('registro.html')
+        usuario_id = gestor.crear_usuario(username, correo, password)
+        if usuario_id:
+            flash(f"Registro exitoso: {username}. Ahora puedes iniciar sesión.", 'success')
+            return redirect(url_for('iniciar'))
+        else:
+            flash("Este correo ya está registrado", 'error')
+            return render_template('registro.html')
+    return render_template('registro.html')
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    flash('Has cerrado sesión correctamente', 'info')
+    return redirect(url_for('iniciar'))
+
+# ==================== PERFIL DE USUARIO ====================
+
+@app.route('/perfil')
+def perfil():
+    if not session.get('logueado'):
+        return redirect(url_for('iniciar'))
+    usuario_id = session.get('usuario_id')
+    usuario = gestor.obtener_usuario(usuario_id)
+    return render_template('perfil.html', usuario=usuario)
+
+@app.route('/cambiar_nombre', methods=['POST'])
+def cambiar_nombre():
+    if not session.get('logueado'):
+        return redirect(url_for('iniciar'))
+    
+    nuevo_nombre = request.form.get('nuevo_nombre', '').strip()
+    if not nuevo_nombre:
+        flash('El nombre no puede estar vacío', 'error')
+        return redirect(url_for('perfil'))
+    
+    if len(nuevo_nombre) < 3:
+        flash('El nombre debe tener al menos 3 caracteres', 'error')
+        return redirect(url_for('perfil'))
+    
+    usuario_id = session.get('usuario_id')
+    gestor.usuarios.update_one(
+        {"_id": ObjectId(usuario_id)},
+        {"$set": {"username": nuevo_nombre}}
+    )
+    
+    session['usuario'] = nuevo_nombre
+    flash('Nombre actualizado correctamente', 'success')
+    return redirect(url_for('perfil'))
+
+# ==================== RECUPERACION DE CONTRASEÑA ====================
+
 codigos_recuperacion = {}
+
+@app.route('/recuperar')
+def recuperar():
+    return render_template('recuperar.html')
 
 @app.route('/recuperarr', methods=['GET', 'POST'])
 def recuperarr():
@@ -138,40 +211,7 @@ def nueva_contrasena(correo):
         return redirect(url_for('iniciar'))
     return render_template('nueva_contrasena.html', correo=correo)
 
-@app.route('/recuperar')
-def recuperar():
-    return render_template('recuperar.html')
-
-@app.route('/registrar', methods=['GET', 'POST'])
-def registrar():
-    if request.method == 'POST':
-        username = request.form['username']
-        correo = request.form['correo']
-        password = request.form['password']
-        confirmPassword = request.form.get("confirmPassword")
-        if password != confirmPassword:
-            flash("Las contraseñas no coinciden", 'error')
-            return render_template('registro.html')
-        usuario_id = gestor.crear_usuario(username, correo, password)
-        if usuario_id:
-            flash(f"Registro exitoso: {username}. Ahora puedes iniciar sesión.", 'success')
-            return redirect(url_for('iniciar'))
-        else:
-            flash("Este correo ya está registrado", 'error')
-            return render_template('registro.html')
-    return render_template('registro.html')
-
-@app.route("/iniciar")
-def iniciar():
-    if session.get('logueado'):
-        return redirect(url_for('backrooms_index'))
-    return render_template('iniciar.html')
-
-@app.route("/logout")
-def logout():
-    session.clear()
-    flash('Has cerrado sesión correctamente', 'info')
-    return redirect(url_for('iniciar'))
+# ==================== RUTAS DE NIVELES ====================
 
 @app.route('/backrooms')
 def backrooms_index():
@@ -198,28 +238,28 @@ def agregar_nivel():
         return redirect(url_for('iniciar'))
     if request.method == 'POST':
         datos = {
-        'nombre': request.form.get('nombre'),
-        'numero': request.form.get('numero'),
-        'peligro': request.form.get('peligro'),
-        'liquidos': request.form.get('liquidos'),
-        'comida': request.form.get('comida'),
-        'otros': request.form.get('otros'),
-        'entidades': request.form.get('entidades'),
-        'entradas': request.form.get('entradas'),
-        'salidas': request.form.get('salidas'),
-        'descripcion': request.form.get('descripcion'),
-        'imagen_url': request.form.get('imagen_url'),
-        'imagen_fondo_url': request.form.get('imagen_fondo_url'),
-        'color_fondo': request.form.get('color_fondo', '#16213e'),
-        'color_card': request.form.get('color_card', '#0f3460'),
-        'color_texto': request.form.get('color_texto', '#ffffff'),
-        'evento1_nombre': request.form.get('evento1_nombre'),
-        'evento1_descripcion': request.form.get('evento1_descripcion'),
-        'evento2_nombre': request.form.get('evento2_nombre'),
-        'evento2_descripcion': request.form.get('evento2_descripcion'),
-        'evento3_nombre': request.form.get('evento3_nombre'),
-        'evento3_descripcion': request.form.get('evento3_descripcion') }
-        
+            'nombre': request.form.get('nombre'),
+            'numero': request.form.get('numero'),
+            'peligro': request.form.get('peligro'),
+            'liquidos': request.form.get('liquidos'),
+            'comida': request.form.get('comida'),
+            'otros': request.form.get('otros'),
+            'entidades': request.form.get('entidades'),
+            'entradas': request.form.get('entradas'),
+            'salidas': request.form.get('salidas'),
+            'descripcion': request.form.get('descripcion'),
+            'imagen_url': request.form.get('imagen_url'),
+            'imagen_fondo_url': request.form.get('imagen_fondo_url'),
+            'color_fondo': request.form.get('color_fondo', '#16213e'),
+            'color_card': request.form.get('color_card', '#0f3460'),
+            'color_texto': request.form.get('color_texto', '#ffffff'),
+            'evento1_nombre': request.form.get('evento1_nombre'),
+            'evento1_descripcion': request.form.get('evento1_descripcion'),
+            'evento2_nombre': request.form.get('evento2_nombre'),
+            'evento2_descripcion': request.form.get('evento2_descripcion'),
+            'evento3_nombre': request.form.get('evento3_nombre'),
+            'evento3_descripcion': request.form.get('evento3_descripcion')
+        }
         if gestor.obtener_nivel_por_numero(int(datos['numero'])):
             flash(f'El nivel {datos["numero"]} ya existe en los Backrooms', 'error')
             return render_template('formulario.html')
@@ -237,28 +277,28 @@ def editar_nivel(nivel_id):
         return redirect(url_for('iniciar'))
     if request.method == 'POST':
         datos = {
-        'nombre': request.form.get('nombre'),
-        'numero': request.form.get('numero'),
-        'peligro': request.form.get('peligro'),
-        'liquidos': request.form.get('liquidos'),
-        'comida': request.form.get('comida'),
-        'otros': request.form.get('otros'),
-        'entidades': request.form.get('entidades'),
-        'entradas': request.form.get('entradas'),
-        'salidas': request.form.get('salidas'),
-        'descripcion': request.form.get('descripcion'),
-        'imagen_url': request.form.get('imagen_url'),
-        'imagen_fondo_url': request.form.get('imagen_fondo_url'),
-        'color_fondo': request.form.get('color_fondo', '#16213e'),
-        'color_card': request.form.get('color_card', '#0f3460'),
-        'color_texto': request.form.get('color_texto', '#ffffff'),
-        'evento1_nombre': request.form.get('evento1_nombre'),
-        'evento1_descripcion': request.form.get('evento1_descripcion'),
-        'evento2_nombre': request.form.get('evento2_nombre'),
-        'evento2_descripcion': request.form.get('evento2_descripcion'),
-        'evento3_nombre': request.form.get('evento3_nombre'),
-        'evento3_descripcion': request.form.get('evento3_descripcion')
-    }
+            'nombre': request.form.get('nombre'),
+            'numero': request.form.get('numero'),
+            'peligro': request.form.get('peligro'),
+            'liquidos': request.form.get('liquidos'),
+            'comida': request.form.get('comida'),
+            'otros': request.form.get('otros'),
+            'entidades': request.form.get('entidades'),
+            'entradas': request.form.get('entradas'),
+            'salidas': request.form.get('salidas'),
+            'descripcion': request.form.get('descripcion'),
+            'imagen_url': request.form.get('imagen_url'),
+            'imagen_fondo_url': request.form.get('imagen_fondo_url'),
+            'color_fondo': request.form.get('color_fondo', '#16213e'),
+            'color_card': request.form.get('color_card', '#0f3460'),
+            'color_texto': request.form.get('color_texto', '#ffffff'),
+            'evento1_nombre': request.form.get('evento1_nombre'),
+            'evento1_descripcion': request.form.get('evento1_descripcion'),
+            'evento2_nombre': request.form.get('evento2_nombre'),
+            'evento2_descripcion': request.form.get('evento2_descripcion'),
+            'evento3_nombre': request.form.get('evento3_nombre'),
+            'evento3_descripcion': request.form.get('evento3_descripcion')
+        }
         if gestor.actualizar_nivel(nivel_id, datos):
             flash('Nivel actualizado correctamente', 'success')
         else:
@@ -280,11 +320,26 @@ def eliminar_nivel(nivel_id):
         flash('Error al eliminar el nivel', 'error')   
     return redirect(url_for('mis_niveles'))
 
+@app.route('/nivel/<nivel_id>')
+def ver_nivel(nivel_id):
+    if not session.get('logueado'):
+        return redirect(url_for('iniciar'))
+    nivel = gestor.obtener_nivel_por_id(nivel_id)
+    if not nivel:
+        flash('Nivel no encontrado', 'error')
+        return redirect(url_for('backrooms_index'))
+    nivel['creador'] = gestor.obtener_nombre_usuario(nivel['usuario_id'])
+    return render_template('nivel_detalle.html', nivel=nivel, tipo_actual='niveles')
+
+# ==================== RUTAS DE OBJETOS ====================
+
 @app.route('/objetos')
 def objetos_index():
     if not session.get('logueado'):
         return redirect(url_for('iniciar'))
     objetos = gestor.obtener_objetos()
+    for objeto in objetos:
+        objeto['creador'] = gestor.obtener_nombre_usuario(objeto['usuario_id'])
     return render_template('objetos_index.html', objetos=objetos, tipo_actual='objetos')
 
 @app.route('/mis_objetos')
@@ -293,6 +348,8 @@ def mis_objetos():
         return redirect(url_for('iniciar'))
     usuario_id = session.get('usuario_id')
     objetos = gestor.obtener_objetos(usuario_id)
+    for objeto in objetos:
+        objeto['creador'] = session.get('usuario')
     return render_template('mis_objetos.html', objetos=objetos)
 
 @app.route('/objetos/agregar', methods=['GET', 'POST'])
@@ -308,7 +365,16 @@ def agregar_objeto():
             'rareza': request.form.get('rareza'),
             'clase': request.form.get('clase'),
             'obtencion': request.form.get('obtencion'),
-            'variaciones': request.form.get('variaciones')
+            'imagen_url': request.form.get('imagen_url'),
+            'color_fondo': request.form.get('color_fondo', '#16213e'),
+            'color_card': request.form.get('color_card', '#0f3460'),
+            'color_texto': request.form.get('color_texto', '#ffffff'),
+            'variacion1_nombre': request.form.get('variacion1_nombre'),
+            'variacion1_descripcion': request.form.get('variacion1_descripcion'),
+            'variacion2_nombre': request.form.get('variacion2_nombre'),
+            'variacion2_descripcion': request.form.get('variacion2_descripcion'),
+            'variacion3_nombre': request.form.get('variacion3_nombre'),
+            'variacion3_descripcion': request.form.get('variacion3_descripcion')
         }
         if gestor.obtener_objeto_por_numero(int(datos['numero'])):
             flash(f'El objeto #{datos["numero"]} ya existe en la base de datos', 'error')
@@ -334,7 +400,16 @@ def editar_objeto(objeto_id):
             'rareza': request.form.get('rareza'),
             'clase': request.form.get('clase'),
             'obtencion': request.form.get('obtencion'),
-            'variaciones': request.form.get('variaciones')
+            'imagen_url': request.form.get('imagen_url'),
+            'color_fondo': request.form.get('color_fondo', '#16213e'),
+            'color_card': request.form.get('color_card', '#0f3460'),
+            'color_texto': request.form.get('color_texto', '#ffffff'),
+            'variacion1_nombre': request.form.get('variacion1_nombre'),
+            'variacion1_descripcion': request.form.get('variacion1_descripcion'),
+            'variacion2_nombre': request.form.get('variacion2_nombre'),
+            'variacion2_descripcion': request.form.get('variacion2_descripcion'),
+            'variacion3_nombre': request.form.get('variacion3_nombre'),
+            'variacion3_descripcion': request.form.get('variacion3_descripcion')
         }    
         if gestor.actualizar_objeto(objeto_id, datos):
             flash('Objeto actualizado correctamente', 'success')
@@ -357,6 +432,19 @@ def eliminar_objeto(objeto_id):
         flash('Error al eliminar el objeto', 'error')
     return redirect(url_for('mis_objetos'))
 
+@app.route('/objeto/<objeto_id>')
+def ver_objeto(objeto_id):
+    if not session.get('logueado'):
+        return redirect(url_for('iniciar'))
+    objeto = gestor.obtener_objeto_por_id(objeto_id)
+    if not objeto:
+        flash('Objeto no encontrado', 'error')
+        return redirect(url_for('objetos_index'))
+    objeto['creador'] = gestor.obtener_nombre_usuario(objeto['usuario_id'])
+    return render_template('objeto_detalle.html', objeto=objeto, tipo_actual='objetos')
+
+# ==================== BUSQUEDA ====================
+
 @app.route('/buscar')
 def buscar():
     if not session.get('logueado'):
@@ -370,18 +458,9 @@ def buscar():
         return render_template('index.html', niveles=resultados, busqueda=query, tipo_actual='niveles', busqueda_actual=query)
     else:
         resultados = gestor.buscar_objetos(query)
+        for objeto in resultados:
+            objeto['creador'] = gestor.obtener_nombre_usuario(objeto['usuario_id'])
         return render_template('objetos_index.html', objetos=resultados, busqueda=query, tipo_actual='objetos', busqueda_actual=query)
-
-@app.route('/nivel/<nivel_id>')
-def ver_nivel(nivel_id):
-    if not session.get('logueado'):
-        return redirect(url_for('iniciar'))
-    nivel = gestor.obtener_nivel_por_id(nivel_id)
-    if not nivel:
-        flash('Nivel no encontrado', 'error')
-        return redirect(url_for('backrooms_index'))
-    nivel['creador'] = gestor.obtener_nombre_usuario(nivel['usuario_id'])
-    return render_template('nivel_detalle.html', nivel=nivel, tipo_actual='niveles')
 
 if __name__ == '__main__':
     app.run(debug=True)
